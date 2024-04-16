@@ -8,7 +8,6 @@ class Snake:
         self.head = [(y, x)]
         self.direction = 'RIGHT'
 
-
     def move(self, width, height):
         head = self.body[0]
         if self.direction == 'UP':
@@ -31,6 +30,7 @@ class Board:
         self.width = width
         self.height = height
         self.grid = [[' ' for _ in range(width)] for _ in range(height)]
+        self.obstacles = []
 
     def place_snake(self, snake):
         for y, x in snake.body:
@@ -40,6 +40,12 @@ class Board:
         y, x = food
         self.grid[y][x] = 'X'
 
+    def place_obstacles(self, obstacles):
+        for obstacle in obstacles:
+            y, x = obstacle
+            self.grid[y][x] = 'H'
+            self.obstacles.append(obstacle)
+
 
 class GameLogic:
     def __init__(self, width, height):
@@ -48,6 +54,7 @@ class GameLogic:
         self.snake = Snake(width // 2, height // 2)
         self.board = Board(width, height)
         self.food = self.generate_food()
+        self.obstacles = self.generate_obstacles()  # Generate obstacles
         self.speed = 1.0  # Initial speed (1 square per second)
         self.game_over = False
 
@@ -56,13 +63,54 @@ class GameLogic:
         while incorrect_position:
             x = random.randint(0, self.width - 1)
             y = random.randint(0, self.height - 1)
-            if (y, x) not in self.snake.body:
+            if (y, x) not in self.snake.body and (y, x) not in self.board.obstacles:
                 incorrect_position = False
                 return y, x
 
+    def generate_obstacles(self):
+        obstacles = []
+        max_obstacle_size = 3
+        max_obstacle_squares = 5
+
+        obstacle_num = int(self.width / 5)
+        # ^ We can make a lambda statement that calculates the proper amount of obstacles.
+
+        # Generate three obstacles
+        for _ in range(obstacle_num):
+            # Generate a random position for the obstacle
+            x = random.randint(0, self.width - 1)
+            y = random.randint(0, self.height - 1)
+            obstacle = [(y, x)]
+
+            # Generate the width and height of the obstacle
+            obstacle_width = random.randint(1, max_obstacle_size)
+            obstacle_height = random.randint(1, max_obstacle_size)
+
+            # Ensure that the obstacle doesn't exceed the boundaries of the board
+            obstacle_width = min(obstacle_width, self.width - x)
+            obstacle_height = min(obstacle_height, self.height - y)
+
+            # Generate the obstacle squares
+            while len(obstacle) < max_obstacle_squares:
+                # Generate the direction for the next square
+                directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+                random.shuffle(directions)
+                for dy, dx in directions:
+                    new_y = obstacle[-1][0] + dy
+                    new_x = obstacle[-1][1] + dx
+                    if 0 <= new_y < self.height and 0 <= new_x < self.width and (new_y, new_x) not in obstacle:
+                        obstacle.append((new_y, new_x))
+                        break
+                else:
+                    break  # Unable to add more squares, break out of the loop
+
+            obstacles.append(obstacle)
+
+        return obstacles
+
     def move_snake(self):
         new_head = self.snake.move(self.width, self.height)
-        if new_head in self.snake.body[1:]:
+        if new_head in self.snake.body[1:] or new_head in self.board.obstacles:
             self.game_over = True
             return
 
@@ -81,6 +129,10 @@ class GameLogic:
         self.board.place_snake(self.snake)
         self.board.place_food(self.food)
 
+        # Place obstacles
+        for obstacle in self.obstacles:
+            self.board.place_obstacles(obstacle)
+
 
 class SnakeGameGUI:
     def __init__(self, width, height):
@@ -90,6 +142,7 @@ class SnakeGameGUI:
         self.grid_color = (50, 50, 50)
         self.snake_head_color = (0, 170, 0)  # Color of the snake's head
         self.snake_body_color = (0, 255, 0)  # Color of the snake's body
+        self.obstacle_color = (170, 170, 170)  # Color of the obstacles
         self.screen = pygame.display.set_mode((self.width * self.block_size, self.height * self.block_size))
         pygame.display.set_caption("Snake Game")
 
@@ -111,6 +164,10 @@ class SnakeGameGUI:
                 elif board.grid[y][x] == 'X':
                     pygame.draw.ellipse(self.screen, (255, 0, 0), (
                         x * self.block_size + 1, y * self.block_size + 1, self.block_size - 2, self.block_size - 2))
+                elif board.grid[y][x] == 'H':
+                    pygame.draw.rect(self.screen, self.obstacle_color, (
+                        x * self.block_size + 1, y * self.block_size + 1, self.block_size - 2,
+                        self.block_size - 2))
 
         font = pygame.font.SysFont(None, 24)
         speed_text = font.render(f"Speed: {speed:.2f} squares per second", True, (125, 125, 125))
@@ -160,6 +217,6 @@ class SnakeGame:
 # player_name = input("Enter your name: ")
 
 pygame.init()
-game = SnakeGame(25, 25, "test")
+game = SnakeGame(7, 7, "test")
 game.run_game()
 pygame.quit()
