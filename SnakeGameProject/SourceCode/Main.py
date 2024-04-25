@@ -48,6 +48,7 @@ class Board:
 
 
 class GameLogic:
+    #  TODO: Implement the winning logic
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -68,7 +69,6 @@ class GameLogic:
                 return y, x
 
     def generate_obstacles(self):
-        # TODO: Implement the logic that the obstacles will not generate in the way or inside the snake.
         obstacles = []
         max_obstacle_size = 3
         max_obstacle_squares = 5
@@ -376,6 +376,9 @@ class StartWindow:
         self.screen.blit(text, (self.width // 2 - text.get_width() // 2, 50))
         pygame.display.flip()
         pygame.time.wait(2000)  # Wait for 2 seconds before clearing the message
+
+
+# TODO: Implement the end game screen with the score, the option to play again and with ability to save the game.
 
 
 class SnakeGame:
