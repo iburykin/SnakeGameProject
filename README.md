@@ -21,7 +21,7 @@ The game allows users to dynamically choose the screen size after running the pr
 1. Run the Snake game using the following command:
 
 ```
-python snake_game.py
+python Main.py
 ```
 
 2. Choose the screen size when prompted.
