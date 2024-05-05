@@ -2,7 +2,6 @@ from Snake import Snake
 from Board import Board
 import random
 class GameLogic:
-    #  TODO: Implement the winning logic
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -11,6 +10,11 @@ class GameLogic:
         self.food = self.generate_food()
         self.obstacles = self.generate_obstacles()  # Generate obstacles
         self.speed = 1.0  # Initial speed (1 square per second)
+        self.total_cells = self.width * self.height
+        self.total_obstacles = sum(len(obstacle) for obstacle in self.obstacles)
+        self.winning_condition = self.total_cells - self.total_obstacles
+        self.win_bool = False
+        self.endgame_text = "Congratulations! You have won the game." if self.win_bool else "Game Over!"
         self.game_over = False
 
     def generate_food(self):
@@ -23,8 +27,8 @@ class GameLogic:
                 return y, x
 
     def generate_obstacles(self):
+        obstacle = []
         obstacles = []
-        max_obstacle_size = 3
         max_obstacle_squares = 5
 
         if self.width > 5 and self.height > 5:
@@ -48,17 +52,10 @@ class GameLogic:
                     x = random.randint(0, self.width - 1)
                     y = random.randint(0, self.height - 1)
                     next_move = self.snake.move(self.width, self.height)
-                    if (y, x) not in self.snake.body and (y, x) not in self.board.obstacles and (y, x) != next_move:
+                    if ((y, x) not in self.snake.body and (y, x) not in self.board.obstacles and
+                            (y, x) != next_move and (y, x) != self.food):
                         incorrect_position = False
                         obstacle = [(y, x)]
-
-                # Generate the width and height of the obstacle
-                obstacle_width = random.randint(1, max_obstacle_size)
-                obstacle_height = random.randint(1, max_obstacle_size)
-
-                # Ensure that the obstacle doesn't exceed the boundaries of the board
-                obstacle_width = min(obstacle_width, self.width - x)
-                obstacle_height = min(obstacle_height, self.height - y)
 
                 # Generate the obstacle squares
                 while len(obstacle) < max_obstacle_squares:
@@ -93,6 +90,12 @@ class GameLogic:
             self.speed *= 1.07  # Increase speed by 7%
         else:
             self.snake.body.pop()
+
+        # Check if the player has won the game
+        if len(self.snake.body) == self.winning_condition:
+            self.win_bool = True
+            print("Congratulations! You have won the game.")
+            self.game_over = True
 
     def update_board(self):
         self.board = Board(self.width, self.height)

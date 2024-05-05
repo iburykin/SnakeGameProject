@@ -18,4 +18,3 @@ class Board:
             y, x = obstacle
             self.grid[y][x] = 'H'
             self.obstacles.append(obstacle)
-

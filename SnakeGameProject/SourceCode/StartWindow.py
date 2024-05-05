@@ -1,20 +1,19 @@
 import pygame
 class StartWindow:
-    def __init__(self):
+    def __init__(self, width, height, player_name=None, size=None):
         pygame.display.set_caption("Welcome to Snake Game")
-        screen_info = pygame.display.Info()
-        self.width = screen_info.current_w * 2 // 3
-        self.height = screen_info.current_h * 2 // 3
-        self.screen = pygame.display.set_mode((self.width, self.height))
-        self.font = pygame.font.SysFont(None, 32)
+        self.screen = pygame.display.set_mode((width, height))
+        self.width = width
+        self.height = height
+        self.font = pygame.font.SysFont('start_window', 32)
         self.color_background = (24, 78, 119)
         self.color_inactive = (26, 117, 159)
         self.color_active = (52, 160, 164)
         self.color_nickname_field = self.color_inactive
         self.color_text = (181, 228, 140)
         self.active = None
-        self.nickname_text = ''
-        self.size_num = '5'
+        self.nickname_text = player_name if player_name else ''
+        self.size_num = str(size) if size else '5'
         self.done = False
         self.cursor_visible = False
         self.cursor_timer = 1
@@ -75,7 +74,8 @@ class StartWindow:
         font = pygame.font.Font(None, 32)
         text = font.render("Start the game", 1,
                            (217, 237, 146) if self.nickname_text and self.size_num else self.color_background)
-        pygame.draw.rect(self.screen, (82, 182, 154) if self.nickname_text and self.size_num else self.color_background, self.button)
+        pygame.draw.rect(self.screen, (82, 182, 154) if self.nickname_text and self.size_num else self.color_background,
+                         self.button)
         self.screen.blit(text, (self.button.x + 30, self.button.y + 10))
 
         # Draw size up and down buttons
@@ -134,7 +134,3 @@ class StartWindow:
         self.screen.blit(text, (self.width // 2 - text.get_width() // 2, 50))
         pygame.display.flip()
         pygame.time.wait(2000)  # Wait for 2 seconds before clearing the message
-
-
-# TODO: Implement the end game screen with the score, the option to play again and with ability to save the game.
-

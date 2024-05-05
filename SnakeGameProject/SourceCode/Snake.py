@@ -1,4 +1,3 @@
-import random
 class Snake:
     def __init__(self, x, y):
         self.body = [(y, x), (y, x - 1), (y, x - 2)]
@@ -7,6 +6,7 @@ class Snake:
 
     def move(self, width, height):
         head = self.body[0]
+        new_head = head
         if self.direction == 'UP':
             new_head = (head[0] - 1, head[1])
         elif self.direction == 'DOWN':

@@ -43,25 +43,29 @@ class SnakeGameGUI:
                             pygame.draw.polygon(self.screen, self.snake_head_color, [
                                 (element_x_indentation + self.block_size // 2, element_y_indentation + offset),
                                 (element_x_indentation + offset, element_y_indentation + self.block_size - offset),
-                                (element_x_indentation + self.block_size - offset, element_y_indentation + self.block_size - offset)
+                                (element_x_indentation + self.block_size - offset, element_y_indentation +
+                                 self.block_size - offset)
                             ])
                         elif snake.direction == 'DOWN':
                             pygame.draw.polygon(self.screen, self.snake_head_color, [
                                 (element_x_indentation + offset, element_y_indentation + offset),
                                 (element_x_indentation + self.block_size - offset, element_y_indentation + offset),
-                                (element_x_indentation + self.block_size // 2, element_y_indentation + self.block_size - offset)
+                                (element_x_indentation + self.block_size // 2, element_y_indentation +
+                                 self.block_size - offset)
                             ])
                         elif snake.direction == 'LEFT':
                             pygame.draw.polygon(self.screen, self.snake_head_color, [
                                 (element_x_indentation + self.block_size - offset, element_y_indentation + offset),
-                                (element_x_indentation + self.block_size - offset, element_y_indentation + self.block_size - offset),
+                                (element_x_indentation + self.block_size - offset, element_y_indentation +
+                                 self.block_size - offset),
                                 (element_x_indentation + offset, element_y_indentation + self.block_size // 2)
                             ])
                         elif snake.direction == 'RIGHT':
                             pygame.draw.polygon(self.screen, self.snake_head_color, [
                                 (element_x_indentation + offset, element_y_indentation + offset),
                                 (element_x_indentation + offset, element_y_indentation + self.block_size - offset),
-                                (element_x_indentation + self.block_size - offset, element_y_indentation + self.block_size // 2)
+                                (element_x_indentation + self.block_size - offset, element_y_indentation +
+                                 self.block_size // 2)
                             ])
                     else:
                         pygame.draw.rect(self.screen, self.snake_body_color, (
@@ -77,18 +81,19 @@ class SnakeGameGUI:
                         self.block_size - 2))
 
         # Draw speed text
-        font = pygame.font.SysFont(None, int(self.frame_width / 2.5))
+        font = pygame.font.SysFont('speed', int(self.frame_width / 2.5))
         speed_text = font.render(f"Speed: {speed:.2f} squares per second", True, self.color_text)
         self.screen.blit(speed_text, (10, self.height * self.block_size + self.frame_width * 1.5))
 
         # Draw player's name and score
-        font_player = pygame.font.SysFont(None, int(self.frame_width / 2.5))
+        font_player = pygame.font.SysFont('player', int(self.frame_width / 2.5))
         player_text = font_player.render(f"Player: {player_name}", True, self.color_text)
         self.screen.blit(player_text, (10, 5))
 
-        font_score = pygame.font.SysFont(None, int(self.frame_width / 2))
+        font_score = pygame.font.SysFont('score', int(self.frame_width / 2))
         score_text = font_score.render(f"Score: {len(snake.body) - 3}", True, self.color_text)
         player_text_height = font_player.size(f"Player: {player_name}")[1]
         self.screen.blit(score_text, (10, player_text_height + self.frame_width // 3))
 
         pygame.display.update()
+
