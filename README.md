@@ -24,5 +24,6 @@ The game allows users to dynamically choose the screen size after running the pr
 python Main.py
 ```
 
-2. Choose the screen size when prompted.
+2. Enter Your name and select the screen size when prompted.
 3. Follow the on-screen instructions to control the snake and enjoy the game!
+
