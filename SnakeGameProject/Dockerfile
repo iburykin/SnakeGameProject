@@ -1,5 +1,5 @@
 # Use the official Python image from the Docker Hub
-FROM python:3.12
+FROM python:3.9
 
 # Set the working directory in the container
 WORKDIR /app
@@ -31,4 +31,4 @@ COPY . /app/
 EXPOSE 1434
 
 # Run the Python script when the container launches
-CMD ["python", "main.py"]
+CMD ["python", "SourceCode/Main.py"]
