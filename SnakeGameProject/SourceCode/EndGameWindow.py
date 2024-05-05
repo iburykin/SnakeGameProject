@@ -47,3 +47,4 @@ class EndGameWindow:
                     print("Play again")
                     return "play_again"
         return None
+

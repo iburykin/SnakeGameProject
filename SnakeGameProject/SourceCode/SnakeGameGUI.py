@@ -2,7 +2,6 @@ import pygame
 from Board import Board
 from GameLogic import GameLogic
 
-
 class SnakeGameGUI:
     def __init__(self, width, height):
         self.width = width
@@ -96,4 +95,3 @@ class SnakeGameGUI:
         self.screen.blit(score_text, (10, player_text_height + self.frame_width // 3))
 
         pygame.display.update()
-
