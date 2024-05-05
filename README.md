@@ -1,9 +1,6 @@
-
-
-```
 # Snake Game Project
 
-This project aims to develop a Python-based Snake Game, providing players with an engaging gaming experience where they control a snake to consume food items and grow in length while avoiding obstacles and self-collision. The game offers customization options, comprehensive testing, and deployment using Docker for scalability and management.
+Welcome to the Snake Game Project! This Python-based game offers players an immersive experience where they control a snake to consume food items and grow while avoiding obstacles and self-collision. With customizable screen sizes and deployment options using Docker, this project ensures an enjoyable gaming experience.
 
 ## Installation
 
@@ -17,17 +14,15 @@ pip install -r requirements.txt
 
 ## Configuration
 
-The game allows users to customize the screen size dynamically after the program is run.
+The game allows users to dynamically choose the screen size after running the program.
 
-## Run
+## How to Play
 
-Run the Snake game using the following command:
-
-```
-python Main.py
-```
-
-Upon running the program, you will be prompted to choose the screen size for the game. Follow the on-screen instructions to start playing and enjoy the Snake game.
+1. Run the Snake game using the following command:
 
 ```
+python snake_game.py
+```
 
+2. Choose the screen size when prompted.
+3. Follow the on-screen instructions to control the snake and enjoy the game!
