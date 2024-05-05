@@ -2,6 +2,7 @@ import pygame
 from Board import Board
 from GameLogic import GameLogic
 
+
 class SnakeGameGUI:
     def __init__(self, width, height):
         self.width = width
