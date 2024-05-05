@@ -10,6 +10,7 @@ class Snake:
 
     def move(self, width, height):
         head = self.body[0]
+        new_head = head
         if self.direction == 'UP':
             new_head = (head[0] - 1, head[1])
         elif self.direction == 'DOWN':
@@ -48,7 +49,6 @@ class Board:
 
 
 class GameLogic:
-    #  TODO: Implement the winning logic
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -57,6 +57,11 @@ class GameLogic:
         self.food = self.generate_food()
         self.obstacles = self.generate_obstacles()  # Generate obstacles
         self.speed = 1.0  # Initial speed (1 square per second)
+        self.total_cells = self.width * self.height
+        self.total_obstacles = sum(len(obstacle) for obstacle in self.obstacles)
+        self.winning_condition = self.total_cells - self.total_obstacles
+        self.win_bool = False
+        self.endgame_text = "Congratulations! You have won the game." if self.win_bool else "Game Over!"
         self.game_over = False
 
     def generate_food(self):
@@ -69,8 +74,8 @@ class GameLogic:
                 return y, x
 
     def generate_obstacles(self):
+        obstacle = []
         obstacles = []
-        max_obstacle_size = 3
         max_obstacle_squares = 5
 
         if self.width > 5 and self.height > 5:
@@ -94,17 +99,10 @@ class GameLogic:
                     x = random.randint(0, self.width - 1)
                     y = random.randint(0, self.height - 1)
                     next_move = self.snake.move(self.width, self.height)
-                    if (y, x) not in self.snake.body and (y, x) not in self.board.obstacles and (y, x) != next_move:
+                    if ((y, x) not in self.snake.body and (y, x) not in self.board.obstacles and
+                            (y, x) != next_move and (y, x) != self.food):
                         incorrect_position = False
                         obstacle = [(y, x)]
-
-                # Generate the width and height of the obstacle
-                obstacle_width = random.randint(1, max_obstacle_size)
-                obstacle_height = random.randint(1, max_obstacle_size)
-
-                # Ensure that the obstacle doesn't exceed the boundaries of the board
-                obstacle_width = min(obstacle_width, self.width - x)
-                obstacle_height = min(obstacle_height, self.height - y)
 
                 # Generate the obstacle squares
                 while len(obstacle) < max_obstacle_squares:
@@ -139,6 +137,12 @@ class GameLogic:
             self.speed *= 1.07  # Increase speed by 7%
         else:
             self.snake.body.pop()
+
+        # Check if the player has won the game
+        if len(self.snake.body) == self.winning_condition:
+            self.win_bool = True
+            print("Congratulations! You have won the game.")
+            self.game_over = True
 
     def update_board(self):
         self.board = Board(self.width, self.height)
@@ -190,25 +194,29 @@ class SnakeGameGUI:
                             pygame.draw.polygon(self.screen, self.snake_head_color, [
                                 (element_x_indentation + self.block_size // 2, element_y_indentation + offset),
                                 (element_x_indentation + offset, element_y_indentation + self.block_size - offset),
-                                (element_x_indentation + self.block_size - offset, element_y_indentation + self.block_size - offset)
+                                (element_x_indentation + self.block_size - offset, element_y_indentation +
+                                 self.block_size - offset)
                             ])
                         elif snake.direction == 'DOWN':
                             pygame.draw.polygon(self.screen, self.snake_head_color, [
                                 (element_x_indentation + offset, element_y_indentation + offset),
                                 (element_x_indentation + self.block_size - offset, element_y_indentation + offset),
-                                (element_x_indentation + self.block_size // 2, element_y_indentation + self.block_size - offset)
+                                (element_x_indentation + self.block_size // 2, element_y_indentation +
+                                 self.block_size - offset)
                             ])
                         elif snake.direction == 'LEFT':
                             pygame.draw.polygon(self.screen, self.snake_head_color, [
                                 (element_x_indentation + self.block_size - offset, element_y_indentation + offset),
-                                (element_x_indentation + self.block_size - offset, element_y_indentation + self.block_size - offset),
+                                (element_x_indentation + self.block_size - offset, element_y_indentation +
+                                 self.block_size - offset),
                                 (element_x_indentation + offset, element_y_indentation + self.block_size // 2)
                             ])
                         elif snake.direction == 'RIGHT':
                             pygame.draw.polygon(self.screen, self.snake_head_color, [
                                 (element_x_indentation + offset, element_y_indentation + offset),
                                 (element_x_indentation + offset, element_y_indentation + self.block_size - offset),
-                                (element_x_indentation + self.block_size - offset, element_y_indentation + self.block_size // 2)
+                                (element_x_indentation + self.block_size - offset, element_y_indentation +
+                                 self.block_size // 2)
                             ])
                     else:
                         pygame.draw.rect(self.screen, self.snake_body_color, (
@@ -224,16 +232,16 @@ class SnakeGameGUI:
                         self.block_size - 2))
 
         # Draw speed text
-        font = pygame.font.SysFont(None, int(self.frame_width / 2.5))
+        font = pygame.font.SysFont('speed', int(self.frame_width / 2.5))
         speed_text = font.render(f"Speed: {speed:.2f} squares per second", True, self.color_text)
         self.screen.blit(speed_text, (10, self.height * self.block_size + self.frame_width * 1.5))
 
         # Draw player's name and score
-        font_player = pygame.font.SysFont(None, int(self.frame_width / 2.5))
+        font_player = pygame.font.SysFont('player', int(self.frame_width / 2.5))
         player_text = font_player.render(f"Player: {player_name}", True, self.color_text)
         self.screen.blit(player_text, (10, 5))
 
-        font_score = pygame.font.SysFont(None, int(self.frame_width / 2))
+        font_score = pygame.font.SysFont('score', int(self.frame_width / 2))
         score_text = font_score.render(f"Score: {len(snake.body) - 3}", True, self.color_text)
         player_text_height = font_player.size(f"Player: {player_name}")[1]
         self.screen.blit(score_text, (10, player_text_height + self.frame_width // 3))
@@ -242,21 +250,20 @@ class SnakeGameGUI:
 
 
 class StartWindow:
-    def __init__(self):
+    def __init__(self, width, height, player_name=None, size=None):
         pygame.display.set_caption("Welcome to Snake Game")
-        screen_info = pygame.display.Info()
-        self.width = screen_info.current_w * 2 // 3
-        self.height = screen_info.current_h * 2 // 3
-        self.screen = pygame.display.set_mode((self.width, self.height))
-        self.font = pygame.font.SysFont(None, 32)
+        self.screen = pygame.display.set_mode((width, height))
+        self.width = width
+        self.height = height
+        self.font = pygame.font.SysFont('start_window', 32)
         self.color_background = (24, 78, 119)
         self.color_inactive = (26, 117, 159)
         self.color_active = (52, 160, 164)
         self.color_nickname_field = self.color_inactive
         self.color_text = (181, 228, 140)
         self.active = None
-        self.nickname_text = ''
-        self.size_num = '5'
+        self.nickname_text = player_name if player_name else ''
+        self.size_num = str(size) if size else '5'
         self.done = False
         self.cursor_visible = False
         self.cursor_timer = 1
@@ -317,7 +324,8 @@ class StartWindow:
         font = pygame.font.Font(None, 32)
         text = font.render("Start the game", 1,
                            (217, 237, 146) if self.nickname_text and self.size_num else self.color_background)
-        pygame.draw.rect(self.screen, (82, 182, 154) if self.nickname_text and self.size_num else self.color_background, self.button)
+        pygame.draw.rect(self.screen, (82, 182, 154) if self.nickname_text and self.size_num else self.color_background,
+                         self.button)
         self.screen.blit(text, (self.button.x + 30, self.button.y + 10))
 
         # Draw size up and down buttons
@@ -378,26 +386,67 @@ class StartWindow:
         pygame.time.wait(2000)  # Wait for 2 seconds before clearing the message
 
 
-# TODO: Implement the end game screen with the score, the option to play again and with ability to save the game.
+class EndGameWindow:
+    def __init__(self, width, height, game_result):
+        pygame.display.set_caption("Game Over")
+        self.width = width
+        self.height = height
+        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.font = pygame.font.SysFont('end_game_window', 32)
+        self.color_background = (24, 78, 119)
+        self.color_inactive = (26, 117, 159)
+        self.color_active = (52, 160, 164)
+        self.color_text = (181, 228, 140)
+        self.game_result = game_result
+        self.save_exit_button = pygame.Rect(self.width // 2 - 100, self.height // 2 + 50, 200, 50)
+        self.play_again_button = pygame.Rect(self.width // 2 - 100, self.height // 2 + 110, 200, 50)
+        self.done = False
+
+    def draw_window(self):
+        self.screen.fill(self.color_background)  # Background color
+
+        # Draw the game result message
+        font = pygame.font.Font(None, 32)
+        text = font.render(self.game_result, 1, self.color_text)
+        self.screen.blit(text, (self.width // 2 - text.get_width() // 2, self.height // 2 - 100))
+
+        # Draw the buttons
+        self.draw_button("Save the game and exit", self.save_exit_button)
+        self.draw_button("Play again", self.play_again_button)
+
+        pygame.display.flip()
+
+    def draw_button(self, message, button):
+        font = pygame.font.Font(None, 32)
+        text = font.render(message, 1, self.color_text)
+        pygame.draw.rect(self.screen, self.color_active, button)
+        self.screen.blit(text, (button.x + 30, button.y + 10))
+
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.done = True
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.save_exit_button.collidepoint(event.pos):
+                    print("Save the game and exit")
+                    return "save_exit"
+                elif self.play_again_button.collidepoint(event.pos):
+                    print("Play again")
+                    return "play_again"
+        return None
 
 
 class SnakeGame:
     def __init__(self):
         self.game_logic = None
         self.gui = None
-        self.start_window = StartWindow()
+        screen_info = pygame.display.Info()
+        self.width = screen_info.current_w * 2 // 3
+        self.height = screen_info.current_h * 2 // 3
+        self.start_window = StartWindow(self.width, self.height)
         self.player_name, self.size = None, None
 
-    def run_game(self):
-        while not self.start_window.done:
-            self.start_window.draw_window()
-            self.player_name, self.size = self.start_window.handle_events()
-            if self.player_name and self.size:
-                break
-
-        if self.player_name is None or self.size is None:
-            return  # Ending the game if the start window was closed.
-
+    def start_game(self):
         self.gui = SnakeGameGUI(self.size, self.size)
         self.game_logic = GameLogic(self.size, self.size)
         clock = pygame.time.Clock()
@@ -421,8 +470,34 @@ class SnakeGame:
             self.gui.draw_board(self.game_logic.board, self.game_logic.speed, self.game_logic.snake, self.player_name)
             clock.tick(self.game_logic.speed)  # Adjust game speed
 
-        print("Game Over!")
+        game_result = self.game_logic.endgame_text
+        print(game_result)
         print(f"Score: {len(self.game_logic.snake.body) - 3}")
+
+        end_game_window = EndGameWindow(self.start_window.width, self.start_window.height, game_result)
+        while not end_game_window.done:
+            end_game_window.draw_window()
+            action = end_game_window.handle_events()
+            if action == "save_exit":
+                # Implement the logic to save the game and exit
+                return
+            elif action == "play_again":
+                # Reset the start window with the player's name pre-filled
+                self.start_window = StartWindow(self.width, self.height, self.player_name, self.size)
+                self.run_game()  # Restart the game
+                break
+
+    def run_game(self):
+        while not self.start_window.done:
+            self.start_window.draw_window()
+            self.player_name, self.size = self.start_window.handle_events()
+            if self.player_name and self.size:
+                break
+
+        if self.player_name is None or self.size is None:
+            return  # Ending the game if the start window was closed.
+
+        self.start_game()  # Start the game
 
 
 pygame.init()
