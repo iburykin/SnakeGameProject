@@ -1,6 +1,8 @@
 from Snake import Snake
 from Board import Board
 import random
+
+
 class GameLogic:
     def __init__(self, width, height):
         self.width = width
@@ -16,6 +18,15 @@ class GameLogic:
         self.win_bool = False
         self.endgame_text = "Congratulations! You have won the game." if self.win_bool else "Game Over!"
         self.game_over = False
+
+    def get_state(self):
+        return {
+            'snake': self.snake.body,
+            'food': self.food,
+            'obstacles': self.obstacles,
+            'game_over': self.game_over,
+            'win': self.win_bool,
+        }
 
     def generate_food(self):
         incorrect_position = True
@@ -75,8 +86,10 @@ class GameLogic:
 
         return obstacles
 
-    def move_snake(self):
+    def move_snake(self, direction):
+        self.snake.direction = direction  # Set the direction of the snake
         new_head = self.snake.move(self.width, self.height)
+
         if new_head in self.snake.body[1:] or new_head in self.board.obstacles:
             self.game_over = True
             return

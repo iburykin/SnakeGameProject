@@ -28,7 +28,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Expose port 1434 to allow communication to/from server
-EXPOSE 1434
+EXPOSE 8000
 
 # Run the Python script when the container launches
 CMD ["python", "app.py"]

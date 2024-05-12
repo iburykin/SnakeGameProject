@@ -3,6 +3,8 @@ from GameLogic import GameLogic
 from SnakeGameGUI import SnakeGameGUI
 from StartWindow import StartWindow
 from EndGameWindow import EndGameWindow
+
+
 class SnakeGame:
     def __init__(self):
         self.game_logic = None
