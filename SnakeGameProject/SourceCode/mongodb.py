@@ -56,18 +56,6 @@ def initialize_database():
     else:
         initialize_database_from_file(os.path.join(DB_DIR, DB_FILE))
 
-# Sample function to simulate storing game results
-def simulate_storing_game_results():
-    players = [
-        {'name': 'Player 1', 'score': 10, 'map_size': (10, 10)},
-        {'name': 'Player 2', 'score': 15, 'map_size': (15, 15)},
-        {'name': 'Player 3', 'score': 20, 'map_size': (20, 20)}
-    ]
-    for player in players:
-        store_game_result(player['name'], player['score'], player['map_size'])
-
-# Uncomment the line below to simulate storing game results
-# simulate_storing_game_results()
 
 # Initialize the database upon script execution
 initialize_database()
