@@ -4,6 +4,8 @@ from SnakeGameGUI import SnakeGameGUI
 from StartWindow import StartWindow
 from EndGameWindow import EndGameWindow
 
+from mongodb import store_game_result
+
 
 class SnakeGame:
     def __init__(self):
@@ -42,6 +44,9 @@ class SnakeGame:
         game_result = self.game_logic.endgame_text
         print(game_result)
         print(f"Score: {len(self.game_logic.snake.body) - 3}")
+        # After the game is over
+        score = len(self.game_logic.snake.body) - 3
+        store_game_result(self.player_name, score, self.size)  # Store game result to the database
 
         end_game_window = EndGameWindow(self.start_window.width, self.start_window.height, game_result)
         while not end_game_window.done:

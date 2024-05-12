@@ -86,8 +86,8 @@ class GameLogic:
 
         return obstacles
 
-    def move_snake(self, direction):
-        self.snake.direction = direction  # Set the direction of the snake
+    def move_snake(self):
+
         new_head = self.snake.move(self.width, self.height)
 
         if new_head in self.snake.body[1:] or new_head in self.board.obstacles:
