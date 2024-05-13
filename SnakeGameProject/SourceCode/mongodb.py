@@ -28,21 +28,18 @@ def write_data_to_file(data, filename):
     with open(filename, 'w') as file:
         json.dump(data, file)
 
-# Function to store game result in MongoDB
+# Function to store game result in JSON file
 def store_game_result(name, score, map_size):
+    # Load existing data from JSON file
+    data = read_data_from_file(os.path.join(DB_DIR, DB_FILE))
+    # Append new game result to data
+    data.append({'name': name, 'score': score, 'map_size': map_size})
+    # Write updated data back to JSON file
+    write_data_to_file(data, os.path.join(DB_DIR, DB_FILE))
+
+# Function to store game result in MongoDB
+def store_game_result_to_mongodb(name, score, map_size):
     collection.insert_one({'name': name, 'score': score, 'map_size': map_size})
-
-# Function to initialize the database with JSON data
-def initialize_database_from_file(filename):
-    if check_database_existence():
-        data = read_data_from_file(filename)
-        if data:  # Check if data is not empty
-            collection.insert_many(data)
-
-# Function to dump data to JSON upon application closure
-def dump_data_to_file(filename):
-    data = list(collection.find())
-    write_data_to_file(data, filename)
 
 # Function to initialize the database
 def initialize_database():
@@ -53,9 +50,10 @@ def initialize_database():
         # Create empty data file
         with open(os.path.join(DB_DIR, DB_FILE), 'w') as file:
             json.dump([], file)
-    else:
-        initialize_database_from_file(os.path.join(DB_DIR, DB_FILE))
-
 
 # Initialize the database upon script execution
 initialize_database()
+
+# Example usage:
+# store_game_result("Player1", 100, (10, 10))  # Add data to JSON file
+# store_game_result_to_mongodb("Player1", 100, (10, 10))  # Add data to MongoDB
