@@ -31,4 +31,4 @@ COPY . /app/
 EXPOSE 8000
 
 # Run the Python script when the container launches
-CMD ["python", "app.py"]
+CMD ["python", "SourceCode/Main.py"]

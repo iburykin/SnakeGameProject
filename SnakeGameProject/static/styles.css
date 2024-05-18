@@ -1,9 +1,32 @@
-body {
-    text-align: center;
+#game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
 
-#game-board {
-    width: 600px;
-    height: 600px;
-    margin: 0 auto;
+.row {
+    display: flex;
+}
+
+.row > div {
+    width: 40px;  /* Set the width of the cells */
+    height: 40px;  /* Set the height of the cells */
+    border: 1px solid black;  /* Add a black border to the cells */
+}
+
+.row > .empty {
+    background-color: white;
+}
+
+.row > .snake {
+    background-color: green;
+}
+
+.row > .food {
+    background-color: red;
+}
+
+.row > .obstacle {
+    background-color: gray;
 }

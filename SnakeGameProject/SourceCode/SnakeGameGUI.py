@@ -1,12 +1,11 @@
 import pygame
-from Board import Board
-from GameLogic import GameLogic
+from SnakeGame import SnakeGame
 
 
 class SnakeGameGUI:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
+    def __init__(self):
+        self.width = SnakeGame.size
+        self.height = SnakeGame.size
         self.block_size = 30
         self.color_text = (181, 228, 140)
         self.grid_color = (50, 50, 50)
