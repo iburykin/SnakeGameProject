@@ -43,5 +43,20 @@
         "name": "Test",
         "score": 0,
         "map_size": 10
+    },
+    {
+        "name": "test1",
+        "score": 0,
+        "map_size": 18
+    },
+    {
+        "name": "test",
+        "score": 0,
+        "map_size": 9
+    },
+    {
+        "name": "test",
+        "score": 2,
+        "map_size": 9
     }
 ]

@@ -1,9 +1,44 @@
 let  gameIntervalId = null;
+
+function setCellSize(boardSize) {
+    // Get the available width and height of the viewport
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate the maximum possible cell size
+    const maxCellWidth = Math.floor(viewportWidth / boardSize) - 5;
+    const maxCellHeight = Math.floor(viewportHeight / boardSize) - 5;
+
+    // Use the smaller of the two values to ensure the board fits within the viewport
+    const cellSize = Math.min(maxCellWidth, maxCellHeight) - 5;
+
+    // Create a new CSS rule for the cell size
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .row > div {
+            width: ${cellSize}px;
+            height: ${cellSize}px;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 function startGame() {
+    console.log('Starting game...');
     // Hide the endgame screen if there is one
     document.getElementById('endgameWindow').style.display = 'none';
-    const size = document.getElementById('size').value;
+    let size = document.getElementById('size').value;
+    if (size < 5 || size > 25) {
+        alert('Please enter a valid size between 5 and 25');
+        return;
+    }
+
     const nickname = document.getElementById('nickname').value;
+    console.log('Game size:', size, 'Nickname:', nickname);
+
+    // Set the cell size based on the board size
+    setCellSize(size);
+
     fetch('/start_game', {
         method: 'POST',
         headers: {
@@ -11,12 +46,19 @@ function startGame() {
         },
         body: JSON.stringify({ size: size, nickname: nickname }),
     })
+
+    .then(response => response.json())
+
     .then(() => {
+        console.log('Game started successfully.');
         updateGameView();
         document.getElementById('startingWindow').style.display = 'none';
         document.getElementById('gameWindow').style.display = 'block';
-    });
+    })
+
+    .catch(error => console.error('Error starting game:', error));
 }
+
 
 function updateGameView() {
     fetch('/get_state')
