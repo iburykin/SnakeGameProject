@@ -129,11 +129,18 @@ class GameLogic:
         self.snake.head.insert(0, new_head)
         self.snake.head.pop()
 
+        if not self.food:
+            self.food = self.generate_food()
+        if not self.food:
+            self.game_over = True  # No free space available for food
+            store_game_result(self.nickname, self.score, self.width)
+            store_game_result_to_mongodb(self.nickname, self.score, self.width)
+            return
+
         if new_head == self.food:
             self.food = self.generate_food()
             self.score += 1
             self.speed *= 1.07  # Increase speed by 7%
-
         else:
             self.snake.body.pop()
 
