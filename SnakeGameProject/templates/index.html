@@ -1,13 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Snake Game</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Snake Game</h1>
-    <button onclick="startGame()">Start Game</button>
-    <div id="game-board"></div>
+    <section id="startingWindow"  class="sec">
+        <form id="startForm">
+            <label for="nickname">Enter your nickname:</label><br>
+            <input type="text" id="nickname" name="nickname" required><br>
+            <label for="size">Enter the size of the map (5-25):</label><br>
+            <input type="number" id="size" name="size" min="5" max="25" required><br>
+            <input type="button" value="Start Game" onclick="startGame()">
+        </form>
+    </section>
+    <section id="gameWindow" class="sec">
+        <h2 id="nicknameDisplay"></h2>
+        <h2 id="scoreDisplay"></h2>
+        <div id="game-board"></div> <!-- Ensure this is under the scoreDisplay div -->
+        <div id="speedDisplay"></div>
+    </section>
+    <section id="endgameWindow" style="display: none;"  class="sec">
+        <div id="endgame-screen">
+            <h2 id="endgame-text"></h2>
+            <button id="new-game-button">Start a new game</button>
+            <button id="save-game-button">Save the game</button>
+        </div>
+    </section>
     <script src="{{ url_for('static', filename='game.js') }}"></script>
 </body>
 </html>
