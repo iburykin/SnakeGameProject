@@ -93,9 +93,24 @@ form input[type="button"]:active {
     transition: all 0.3s ease;
 }
 
+/* Add this CSS to the end of your existing CSS file */
+
 #endgame-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
+    background-image: url("{{ url_for('static', filename='endgame.png') }}"); /* Add your background image here */
+    background-size: cover;
+    background-position: center;
 }
+
+#endgame-text {
+    font-size: 3em; /* Increase font size for "Game Over" text */
+    color: white; /* Set text color to white for visibility */
+}
+
 
 #new-game-button {
     padding: 10px 20px;

@@ -43,5 +43,50 @@
         "name": "Test",
         "score": 0,
         "map_size": 10
+    },
+    {
+        "name": "Final testing",
+        "score": 1,
+        "map_size": 8
+    },
+    {
+        "name": "test",
+        "score": 0,
+        "map_size": 12
+    },
+    {
+        "name": "test",
+        "score": 1,
+        "map_size": 12
+    },
+    {
+        "name": "test1",
+        "score": 0,
+        "map_size": 8
+    },
+    {
+        "name": "",
+        "score": 1,
+        "map_size": 7
+    },
+    {
+        "name": "",
+        "score": 0,
+        "map_size": 9
+    },
+    {
+        "name": "",
+        "score": 1,
+        "map_size": 7
+    },
+    {
+        "name": "",
+        "score": 1,
+        "map_size": 7
+    },
+    {
+        "name": "",
+        "score": 0,
+        "map_size": 10
     }
 ]
