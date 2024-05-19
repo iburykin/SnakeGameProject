@@ -85,7 +85,6 @@ def test_food_generation_inside_obstacle(game):
     assert generated_food in sum(obstacles, []), f"Generated food position: {generated_food}, Expected position in obstacles"
 
 
-
 def test_food_generated_on_start(game):
     # Check if food is generated when the game starts
     assert game.food is not None
