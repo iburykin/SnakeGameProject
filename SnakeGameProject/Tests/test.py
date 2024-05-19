@@ -53,6 +53,7 @@ def test_move_snake():
 def game():
     return GameLogic(10, 10, "Test Player")
 
+
 def test_food_generation(game):
     # Generate food multiple times and check if it always returns a valid position
     for _ in range(10):
@@ -60,6 +61,7 @@ def test_food_generation(game):
         game.generate_obstacles()  # Generate obstacles
         food = game.generate_food()
         assert food is None or food not in game.obstacles
+
 
 def test_obstacle_generation(game):
     # Generate obstacles multiple times and check if they always generate valid positions
@@ -70,6 +72,7 @@ def test_obstacle_generation(game):
             for cell in obstacle:
                 assert cell not in game.snake.body
                 assert cell != game.food
+
 
 def test_food_generation_inside_obstacle(game):
     # Generate obstacles and place a food
