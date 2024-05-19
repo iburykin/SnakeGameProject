@@ -1,16 +1,29 @@
+/* Variables for colors */
+:root {
+    --primary-color: #84A98C; /* Green color for buttons */
+    --primary-hover-color: #CAD2C5; /* Lighter green color for button hover effect */
+    --primary-active-color: #84A98C; /* Darker green color for button active effect */
+    --background-color: #A7BEA9; /* Background color matching the logo */
+    --background-game-color: #CAD2C5; /* Background color for the game board */
+    --text-color: #52796F; /* Dark green text color for contrast */
+    --food-color: #4E3C6A; /* Orange color for the food */
+    --obstacle-color: #181F23;
+}
+
+/* Body styles */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     overflow: hidden; /* Hide scrollbars */
     margin: 0;
     padding: 0;
-    background: #ccff33; /* Background color matching the logo */
-    color: #003300; /* Dark green text color for contrast */
+    background: var(--background-color); /* Background color matching the logo */
+    color: var(--text-color); /* Dark green text color for contrast */
 }
 
-h1 {
+h1, h2 {
     margin: 20px;
-    color: #003300;
+    color: var(--text-color);
     font-size: 3em;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -41,6 +54,9 @@ h1 {
     padding: 20px;
     border-radius: 8px;
     transition: all 0.3s ease; /* Smooth transition for better effect */
+    background-image: url('falling-snakes.gif');
+    background-size: cover; /* Ensures the background image covers the entire element */
+    background-position: center; /* Centers the background image */
 }
 
 form {
@@ -66,8 +82,8 @@ form input[type="text"], form input[type="number"] {
 form input[type="button"] {
     padding: 10px 20px;
     font-size: 1em;
-    color: white;
-    background-color: #38b000;
+    color: var(--text-color);
+    background-color: var(--primary-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -76,12 +92,12 @@ form input[type="button"] {
 }
 
 form input[type="button"]:hover {
-    background-color: #70e000;
+    background-color: var(--primary-hover-color);
     transform: translateY(-2px);
 }
 
 form input[type="button"]:active {
-    background-color: #008000;
+    background-color: var(--primary-active-color);
     transform: translateY(0);
 }
 
@@ -92,9 +108,14 @@ form input[type="button"]:active {
     padding: 20px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    background-image: url('falling-snakes.gif');
+    background-size: cover; /* Ensures the background image covers the entire element */
+    background-position: center; /* Centers the background image */
 }
 
 #endgame-screen {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
     text-align: center;
 }
 
@@ -102,7 +123,7 @@ form input[type="button"]:active {
     padding: 10px 20px;
     font-size: 1em;
     color: white;
-    background-color: #38b000;
+    background-color: var(--primary-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -111,12 +132,12 @@ form input[type="button"]:active {
 }
 
 #new-game-button:hover {
-    background-color: #70e000;
+    background-color: var(--primary-hover-color);
     transform: translateY(-2px);
 }
 
 #new-game-button:active {
-    background-color: #008000;
+    background-color: var(--primary-active-color);;
     transform: translateY(0);
 }
 
@@ -124,7 +145,7 @@ form input[type="button"]:active {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin: 5px;
 }
 
 #game-info-and-board {
@@ -156,15 +177,15 @@ form input[type="button"]:active {
 }
 
 .row > .empty {
-    background-color: white;
+    background-color: var(--background-game-color);
 }
 
 .row > .food {
-    background-color: red;
+    background-color: var(--food-color);
 }
 
 .row > .obstacle {
-    background-color: gray;
+    background-color: var(--obstacle-color);
 }
 
 .row > .snake {
@@ -172,7 +193,7 @@ form input[type="button"]:active {
 }
 
 .row > .head {
-    background-color: white;
+    background-color: var(--background-game-color);
     position: relative;
 }
 

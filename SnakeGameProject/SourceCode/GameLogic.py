@@ -12,8 +12,8 @@ class GameLogic:
         self.score = 0  # Initialize the score to 0
         self.snake = Snake(width // 2, height // 2)
         self.board = Board(width, height)
-        self.food = self.generate_food()
         self.obstacles = self.generate_obstacles()  # Generate obstacles
+        self.food = self.generate_food()
         self.update_board()
         self.speed = 1.0  # Initial speed (1 square per second)
         self.total_cells = self.width * self.height
@@ -52,13 +52,12 @@ class GameLogic:
         return state
 
     def generate_food(self):
-        incorrect_position = True
-        while incorrect_position:
-            x = random.randint(0, self.width - 1)
-            y = random.randint(0, self.height - 1)
-            if (y, x) not in self.snake.body and (y, x) not in self.board.obstacles:
-                incorrect_position = False
-                return y, x
+        free_spaces = [(y, x) for y in range(self.height) for x in range(self.width)
+                       if (y, x) not in self.snake.body and (y, x) not in self.board.obstacles]
+        if free_spaces:
+            return random.choice(free_spaces)
+        else:
+            return None  # No free space available, return None
 
     def generate_obstacles(self):
         obstacle = []
@@ -79,12 +78,19 @@ class GameLogic:
             if self.width == 25 and self.height == 25:
                 obstacle_num = 5  # Adjust according to width
 
+            middle_row = self.height // 2  # Find the middle row
+
             for _ in range(obstacle_num):
                 incorrect_position = True
                 while incorrect_position:
                     # Generate a random position for the obstacle
                     x = random.randint(0, self.width - 1)
                     y = random.randint(0, self.height - 1)
+
+                    # Ensure the obstacle is not in the middle row
+                    if y == middle_row:
+                        continue
+
                     next_move = self.snake.move(self.width, self.height)
                     if ((y, x) not in self.snake.body and (y, x) not in self.board.obstacles and
                             (y, x) != next_move and (y, x) != self.food):
