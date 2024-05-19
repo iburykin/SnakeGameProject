@@ -1,4 +1,4 @@
-from SnakeGameProject.SourceCode.GameLogic import GameLogic
+from SourceCode.GameLogic import GameLogic
 
 class SnakeGame:
     def __init__(self, size, nickname):

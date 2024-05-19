@@ -1,5 +1,4 @@
-let gameIntervalId = null;
-
+let  gameIntervalId = null;
 function startGame() {
     const size = document.getElementById('size').value;
     const nickname = document.getElementById('nickname').value;
@@ -10,10 +9,10 @@ function startGame() {
         },
         body: JSON.stringify({ size: size, nickname: nickname }),
     })
-    // .then(response => response.json())
     .then(() => {
-           updateGameView();
-        document.getElementById('startForm').style.display = 'none';
+        updateGameView();
+        document.getElementById('startingWindow').style.display = 'none';
+        document.getElementById('gameWindow').style.display = 'block';
     });
 }
 
@@ -22,9 +21,7 @@ function updateGameView() {
         .then(response => response.json())
         .then(gameState => {
             // Check if the game is over
-            console.log('gameState.game_over: ', gameState.game_over)
             if (gameState.game_over) {
-                console.log('Game over!')
                 // Stop updating the game view
                 if (gameIntervalId !== null) {
                     clearInterval(gameIntervalId);
@@ -32,9 +29,8 @@ function updateGameView() {
                 }
 
                 // Hide the game board and show the endgame screen
-                document.getElementById('game-board').style.display = 'none';
-                document.getElementById('speedDisplay').style.display = 'none';
-                document.getElementById('endgame-screen').style.display = 'block';
+                document.getElementById('gameWindow').style.display = 'none';
+                document.getElementById('endgameWindow').style.display = 'block';
 
                 // Update the endgame text
                 document.getElementById('endgame-text').innerText = gameState.endgame_text;

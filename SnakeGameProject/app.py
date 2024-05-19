@@ -1,12 +1,16 @@
 import threading
 
 from flask import Flask, render_template, request, jsonify
-from SnakeGameProject.SourceCode.SnakeGame import SnakeGame
-from SnakeGameProject.SourceCode.GameLogic import GameLogic
+
+from SourceCode.Snake import Snake
+from SourceCode.SnakeGame import SnakeGame
+from SourceCode.GameLogic import GameLogic
 
 app = Flask(__name__)
 game = None
-
+# TODO: Find out why the snake is not synced with the logic sometimes
+# TODO: Make the movement of the snake into itself impossible
+# TODO: Make the game over screen prettier
 @app.route('/start_game', methods=['POST'])
 def start_game():
     global game
@@ -27,12 +31,6 @@ def get_state():
 def update_direction():
     direction = request.json.get('direction')
     game.game_logic.snake.direction = direction  # Update the direction of the snake
-    return jsonify(game.get_state()), 200
-
-@app.route('/move', methods=['POST'])
-def move():
-    direction = request.json.get('direction')
-    game.move_snake(direction)  # Move the snake in the given direction
     return jsonify(game.get_state()), 200
 
 @app.route('/')

@@ -1,6 +1,6 @@
 import time
-from SnakeGameProject.SourceCode.Snake import Snake
-from SnakeGameProject.SourceCode.Board import Board
+from SourceCode.Snake import Snake
+from SourceCode.Board import Board
 
 import random
 class GameLogic:
