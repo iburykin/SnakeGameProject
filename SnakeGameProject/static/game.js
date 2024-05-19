@@ -1,6 +1,4 @@
 let gameIntervalId = null;
-// TODO: Move all the game-info in the gameWindow to the left side of the screen
-// TODO: Center the endgame info in the endgameWindow
 function setCellSize(boardSize) {
     // Get the available width and height of the viewport
     const viewportWidth = window.innerWidth;
