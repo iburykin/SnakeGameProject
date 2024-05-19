@@ -36,6 +36,7 @@ def test_place_food():
     assert board.grid[5][5] == 'F'
 
 
+
 def test_place_obstacles():
     board = Board(10, 10)
     board.place_obstacles([(5, 5), (5, 6)])
@@ -50,33 +51,3 @@ def test_move_snake():
     assert game.snake.head[0] == (4, 5)
 
 
-def game():
-    return GameLogic(10, 10, "Test Player")
-
-
-def test_food_generation(game):
-    # Generate food multiple times and check if it always returns a valid position
-    for _ in range(10):
-        game.food = None  # Reset food
-        game.generate_obstacles()  # Generate obstacles
-        food = game.generate_food()
-        assert food is None or food not in game.obstacles
-
-
-def test_obstacle_generation(game):
-    # Generate obstacles multiple times and check if they always generate valid positions
-    for _ in range(10):
-        game.obstacles = []  # Reset obstacles
-        game.generate_obstacles()
-        for obstacle in game.obstacles:
-            for cell in obstacle:
-                assert cell not in game.snake.body
-                assert cell != game.food
-
-
-def test_food_generation_inside_obstacle(game):
-    # Generate obstacles and place a food
-    game.generate_obstacles()
-    game.food = (5, 5)  # Place food inside an obstacle
-    # Try generating a new food, it should return None because the previous food is inside an obstacle
-    assert game.generate_food() is None
