@@ -154,6 +154,7 @@ form input[type="button"]:active {
 }
 
 .row > .head {
+    background-color: white;
     position: relative;
 }
 
