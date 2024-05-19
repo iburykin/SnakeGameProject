@@ -12,8 +12,8 @@ class GameLogic:
         self.score = 0  # Initialize the score to 0
         self.snake = Snake(width // 2, height // 2)
         self.board = Board(width, height)
-        self.obstacles = self.generate_obstacles()  # Generate obstacles
         self.food = self.generate_food()
+        self.obstacles = self.generate_obstacles()  # Generate obstacles
         self.update_board()
         self.speed = 1.0  # Initial speed (1 square per second)
         self.total_cells = self.width * self.height
@@ -72,11 +72,11 @@ class GameLogic:
             if self.width >= 10 and self.height >= 10:
                 obstacle_num = 2
             if self.width >= 15 and self.height >= 15:
-                obstacle_num = 3
-            if self.width >= 18 and self.height >= 15:
                 obstacle_num = 4
+            if self.width >= 18 and self.height >= 15:
+                obstacle_num = 7
             if self.width == 25 and self.height == 25:
-                obstacle_num = 5  # Adjust according to width
+                obstacle_num = 10  # Adjust according to width
 
             middle_row = self.height // 2  # Find the middle row
 
