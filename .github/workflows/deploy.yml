@@ -13,11 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: python -m pip install -r SnakeGameProject/requirements.txt
+
       - name: Run tests
-        run: |
-          python -m pip install -r requirements.txt
-          pytest test.py
-        working-directory: SnakeGameProject
+        run: pytest SnakeGameProject/Tests/test.py
+        working-directory: ${{ github.workspace }}
 
       - name: Build Docker image
         run: docker build -t SnakeGameProject:latest .
