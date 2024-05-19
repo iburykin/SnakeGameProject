@@ -14,6 +14,7 @@
     height: 40px;  /* Set the height of the cells */
     border: 1px solid black;  /* Add a black border to the cells */
     position: relative;  /* Add this line */
+
 }
 
 .row > .empty {

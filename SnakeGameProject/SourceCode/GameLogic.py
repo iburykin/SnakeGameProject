@@ -1,7 +1,8 @@
 import time
 from SourceCode.Snake import Snake
 from SourceCode.Board import Board
-
+from SourceCode.mongodb import store_game_result
+from SourceCode.mongodb import store_game_result_to_mongodb
 import random
 class GameLogic:
     def __init__(self, width, height, nickname):
@@ -46,6 +47,7 @@ class GameLogic:
                     state_row.append('F')
                 elif cell == 'O':
                     state_row.append('O')
+
             state['board'].append(state_row)
         return state
 
@@ -113,6 +115,8 @@ class GameLogic:
         new_head = self.snake.move(self.width, self.height)
         if new_head in self.snake.body[1:] or new_head in self.board.obstacles:
             self.game_over = True
+            store_game_result(self.nickname, self.score, self.width)
+            store_game_result_to_mongodb(self.nickname, self.score, self.width)
             return
 
         self.snake.body.insert(0, new_head)
@@ -123,14 +127,19 @@ class GameLogic:
             self.food = self.generate_food()
             self.score += 1
             self.speed *= 1.07  # Increase speed by 7%
+
         else:
             self.snake.body.pop()
 
         # Check if the player has won the game
         if len(self.snake.body) == self.winning_condition:
             self.win_bool = True
-            print("Congratulations! You have won the game.")
             self.game_over = True
+            store_game_result(self.nickname, self.score, (self.width, self.height))
+            store_game_result_to_mongodb(self.nickname, self.score, (self.width, self.height))
+            print("Congratulations! You have won the game.")
+
+        self.update_board()
 
         self.update_board()
 

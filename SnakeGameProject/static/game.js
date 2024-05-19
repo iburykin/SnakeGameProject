@@ -2,7 +2,6 @@ let  gameIntervalId = null;
 function startGame() {
     // Hide the endgame screen if there is one
     document.getElementById('endgameWindow').style.display = 'none';
-
     const size = document.getElementById('size').value;
     const nickname = document.getElementById('nickname').value;
     fetch('/start_game', {
