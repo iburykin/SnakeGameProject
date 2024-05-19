@@ -1,16 +1,19 @@
-from Snake import Snake
-from Board import Board
+import time
+from SourceCode.Snake import Snake
+from SourceCode.Board import Board
+
 import random
-
-
 class GameLogic:
-    def __init__(self, width, height):
+    def __init__(self, width, height, nickname):
         self.width = width
         self.height = height
+        self.nickname = nickname  # Initialize the nickname
+        self.score = 0  # Initialize the score to 0
         self.snake = Snake(width // 2, height // 2)
         self.board = Board(width, height)
         self.food = self.generate_food()
         self.obstacles = self.generate_obstacles()  # Generate obstacles
+        self.update_board()
         self.speed = 1.0  # Initial speed (1 square per second)
         self.total_cells = self.width * self.height
         self.total_obstacles = sum(len(obstacle) for obstacle in self.obstacles)
@@ -19,14 +22,29 @@ class GameLogic:
         self.endgame_text = "Congratulations! You have won the game." if self.win_bool else "Game Over!"
         self.game_over = False
 
+    # TODO: Change it so the player name will be passed in another method
     def get_state(self):
-        return {
-            'snake': self.snake.body,
-            'food': self.food,
-            'obstacles': self.obstacles,
+        state = {
+            'board': [],
+            'nickname': self.nickname,  # Include the nickname in the game state
+            'score': self.score,  # Include the score in the game state
+            'speed': self.speed,  # Include the speed in the game state
             'game_over': self.game_over,
-            'win': self.win_bool,
+            'endgame_text': self.endgame_text  # Include the endgame_text in the game state
         }
+        for row in self.board.grid:
+            state_row = []
+            for cell in row:
+                if cell == ' ':
+                    state_row.append(' ')
+                elif cell == 'O':
+                    state_row.append('O')
+                elif cell == 'X':
+                    state_row.append('X')
+                elif cell == 'H':
+                    state_row.append('H')
+            state['board'].append(state_row)
+        return state
 
     def generate_food(self):
         incorrect_position = True
@@ -86,10 +104,10 @@ class GameLogic:
 
         return obstacles
 
-    def move_snake(self):
-
+    def move_snake(self, direction=None):
+        if direction:
+            self.snake.direction = direction
         new_head = self.snake.move(self.width, self.height)
-
         if new_head in self.snake.body[1:] or new_head in self.board.obstacles:
             self.game_over = True
             return
@@ -100,7 +118,8 @@ class GameLogic:
 
         if new_head == self.food:
             self.food = self.generate_food()
-            self.speed *= 1.07  # Increase speed by 7%
+            self.score += 1
+            self.speed /= 1.07  # Increase speed by 7%
         else:
             self.snake.body.pop()
 
@@ -110,11 +129,19 @@ class GameLogic:
             print("Congratulations! You have won the game.")
             self.game_over = True
 
+        self.update_board()
+
     def update_board(self):
-        self.board = Board(self.width, self.height)
+        # Clear the board
+        self.board.grid = [[' ' for _ in range(self.width)] for _ in range(self.height)]
+
+        # Place the new state of the snake, food, and obstacles on the board
         self.board.place_snake(self.snake)
         self.board.place_food(self.food)
-
-        # Place obstacles
         for obstacle in self.obstacles:
             self.board.place_obstacles(obstacle)
+
+    def update_game(self):
+        while not self.game_over:
+            self.move_snake()
+            time.sleep(self.speed)
