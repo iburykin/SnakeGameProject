@@ -1,7 +1,8 @@
 import time
 from SourceCode.Snake import Snake
 from SourceCode.Board import Board
-
+from SourceCode.mongodb import store_game_result
+from SourceCode.mongodb import store_game_result_to_mongodb
 import random
 class GameLogic:
     def __init__(self, width, height, nickname):
@@ -22,7 +23,6 @@ class GameLogic:
         self.endgame_text = "Congratulations! You have won the game." if self.win_bool else "Game Over!"
         self.game_over = False
 
-    # TODO: Change it so the player name will be passed in another method
     def get_state(self):
         state = {
             'board': [],
@@ -110,6 +110,8 @@ class GameLogic:
         new_head = self.snake.move(self.width, self.height)
         if new_head in self.snake.body[1:] or new_head in self.board.obstacles:
             self.game_over = True
+            store_game_result(self.nickname, self.score, self.width)
+            store_game_result_to_mongodb(self.nickname, self.score, self.width)
             return
 
         self.snake.body.insert(0, new_head)
@@ -126,8 +128,10 @@ class GameLogic:
         # Check if the player has won the game
         if len(self.snake.body) == self.winning_condition:
             self.win_bool = True
-            print("Congratulations! You have won the game.")
             self.game_over = True
+            store_game_result(self.nickname, self.score, (self.width, self.height))
+            store_game_result_to_mongodb(self.nickname, self.score, (self.width, self.height))
+            print("Congratulations! You have won the game.")
 
         self.update_board()
 

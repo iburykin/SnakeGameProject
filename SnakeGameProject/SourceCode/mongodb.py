@@ -2,8 +2,12 @@ import json
 import os
 from pymongo import MongoClient
 
-DB_DIR = 'db'
-DB_FILE = 'data.json'
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Define the DB directory and file paths
+DB_DIR = os.path.join(script_dir, 'db')
+DB_FILE = os.path.join(DB_DIR, 'data.json')
 
 # MongoDB connection
 client = MongoClient('mongodb://localhost:27017/')  # MongoDB localhost connection
@@ -20,22 +24,33 @@ def check_database_existence():
 
 # Function to read data from JSON file
 def read_data_from_file(filename):
+    if not os.path.isfile(filename):
+        print(f"File {filename} does not exist, returning empty list")
+        return []
     with open(filename, 'r') as file:
-        return json.load(file)
+        try:
+            return json.load(file)
+        except json.JSONDecodeError:
+            print(f"Error decoding JSON from file {filename}, returning empty list")
+            return []
 
 # Function to write data to JSON file
 def write_data_to_file(data, filename):
     with open(filename, 'w') as file:
-        json.dump(data, file)
+        try:
+            json.dump(data, file, indent=4)
+        except Exception as e:
+            print(f"Error writing JSON to file {filename}: {e}")
 
 # Function to store game result in JSON file
 def store_game_result(name, score, map_size):
     # Load existing data from JSON file
-    data = read_data_from_file(os.path.join(DB_DIR, DB_FILE))
+    data = read_data_from_file(DB_FILE)
     # Append new game result to data
     data.append({'name': name, 'score': score, 'map_size': map_size})
     # Write updated data back to JSON file
-    write_data_to_file(data, os.path.join(DB_DIR, DB_FILE))
+    write_data_to_file(data, DB_FILE)
+    print(f"Stored game result in JSON: {name}, {score}, {map_size}")
 
 # Function to store game result in MongoDB
 def store_game_result_to_mongodb(name, score, map_size):
@@ -49,11 +64,7 @@ def initialize_database():
             os.makedirs(DB_DIR)
         # Create empty data file
         with open(os.path.join(DB_DIR, DB_FILE), 'w') as file:
-            json.dump([], file)
+            json.dump([], file, indent=4)
 
 # Initialize the database upon script execution
 initialize_database()
-
-# Example usage:
-# store_game_result("Player1", 100, (10, 10))  # Add data to JSON file
-# store_game_result_to_mongodb("Player1", 100, (10, 10))  # Add data to MongoDB
