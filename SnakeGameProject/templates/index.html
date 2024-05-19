@@ -1,31 +1,47 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <title>Snake Game</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
-    <h1>Snake Game</h1>
-    <section id="startingWindow"  class="sec">
+
+   <section id="startingWindow" class="sec">
+       <h1>Snake Game</h1>
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='snakelogo.png') }}" alt="Snake Logo">
+        </div>
         <form id="startForm">
-            <label for="nickname">Enter your nickname:</label><br>
+            <label class="form-label" for="nickname">Enter your nickname:</label><br>
             <input type="text" id="nickname" name="nickname" required><br>
-            <label for="size">Enter the size of the map (5-25):</label><br>
+            <label class="form-label" for="size">Enter the size of the map (5-25):</label><br>
             <input type="number" id="size" name="size" min="5" max="25" required><br>
             <input type="button" value="Start Game" onclick="startGame()">
         </form>
-    </section>
-    <section id="gameWindow" class="sec">
-        <h2 id="nicknameDisplay"></h2>
-        <h2 id="scoreDisplay"></h2>
-        <div id="game-board"></div> <!-- Ensure this is under the scoreDisplay div -->
-    </section>
-    <section id="endgameWindow" style="display: none;"  class="sec">
-        <div id="endgame-screen">
-            <h2 id="endgame-text"></h2>
-            <button id="new-game-button">Start a new game</button>
+   </section>
+
+    <section id="gameWindow" class="sec" style="display: none;">
+        <div id="game-info-and-board">
+            <div id="game-info">
+                <h2 id="nicknameDisplay"></h2>
+                <h2 id="scoreDisplay"></h2>
+            </div>
+            <div id="game-board"></div>
         </div>
     </section>
-    <script src="{{ url_for('static', filename='game.js') }}"></script>
+
+   <section id="endgameWindow" class="sec" style="display: none;">
+       <div id="endgame-screen">
+            <h2 id="endgame-text"></h2>
+            <button id="new-game-button">Start a new game</button>
+       </div>
+   </section>
+
+   <script src="{{ url_for('static', filename='game.js') }}"></script>
+
 </body>
+
 </html>
