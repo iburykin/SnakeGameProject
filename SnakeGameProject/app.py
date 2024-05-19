@@ -8,8 +8,6 @@ from SourceCode.GameLogic import GameLogic
 
 app = Flask(__name__)
 game = None
-# TODO: Find out why the snake is not synced with the logic sometimes
-# TODO: Make the movement of the snake into itself impossible
 # TODO: Make the game over screen prettier
 @app.route('/start_game', methods=['POST'])
 def start_game():
@@ -18,19 +16,22 @@ def start_game():
     nickname = request.json.get('nickname')  # Get the nickname from the request
     game = SnakeGame(size, nickname)  # Create a new game instance
     game.start_game()  # Start the game
-    threading.Thread(target=game.game_logic.update_game).start()  # Start a new thread that will update the game
     return jsonify(game.get_state()), 200
 
 @app.route('/get_state', methods=['GET'])
 def get_state():
     if game is None or game.game_logic.game_over:
         return jsonify(game.get_state()), 400
+    game.game_logic.update_game()  # Update the game state
     return jsonify(game.get_state()), 200
 
 @app.route('/update_direction', methods=['POST'])
 def update_direction():
     direction = request.json.get('direction')
-    game.game_logic.snake.direction = direction  # Update the direction of the snake
+    # Check if the new direction is opposite to the current direction
+    opposite_directions = [('UP', 'DOWN'), ('DOWN', 'UP'), ('LEFT', 'RIGHT'), ('RIGHT', 'LEFT')]
+    if (game.game_logic.snake.direction, direction) not in opposite_directions:
+        game.game_logic.snake.direction = direction  # Update the direction of the snake
     return jsonify(game.get_state()), 200
 
 @app.route('/')

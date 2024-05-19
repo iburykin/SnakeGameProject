@@ -13,14 +13,12 @@
     width: 40px;  /* Set the width of the cells */
     height: 40px;  /* Set the height of the cells */
     border: 1px solid black;  /* Add a black border to the cells */
+    position: relative;  /* Add this line */
+
 }
 
 .row > .empty {
     background-color: white;
-}
-
-.row > .snake {
-    background-color: green;
 }
 
 .row > .food {
@@ -29,4 +27,55 @@
 
 .row > .obstacle {
     background-color: gray;
+}
+
+.row > .snake {
+    background-color: green;
+}
+
+.row > .head {
+    position: relative;
+}
+
+.row > .head::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.row > .head.up::after {
+    left: 50%;
+    bottom: 0;
+    border-left: 20px solid transparent;  /* Increase the size of the border */
+    border-right: 20px solid transparent;  /* Increase the size of the border */
+    border-bottom: 40px solid green;  /* Increase the size of the border */
+    transform: translateX(-50%);
+}
+
+.row > .head.down::after {
+    left: 50%;
+    top: 0;
+    border-left: 20px solid transparent;  /* Increase the size of the border */
+    border-right: 20px solid transparent;  /* Increase the size of the border */
+    border-top: 40px solid green;  /* Increase the size of the border */
+    transform: translateX(-50%);
+}
+
+.row > .head.left::after {
+    right: 0;
+    top: 50%;
+    border-top: 20px solid transparent;  /* Increase the size of the border */
+    border-bottom: 20px solid transparent;  /* Increase the size of the border */
+    border-right: 40px solid green;  /* Increase the size of the border */
+    transform: translateY(-50%);
+}
+
+.row > .head.right::after {
+    left: 0;
+    top: 50%;
+    border-top: 20px solid transparent;  /* Increase the size of the border */
+    border-bottom: 20px solid transparent;  /* Increase the size of the border */
+    border-left: 40px solid green;  /* Increase the size of the border */
+    transform: translateY(-50%);
 }

@@ -23,12 +23,14 @@ class GameLogic:
         self.endgame_text = "Congratulations! You have won the game." if self.win_bool else "Game Over!"
         self.game_over = False
 
+    # TODO: Change it so the player name will be passed in another method
     def get_state(self):
         state = {
             'board': [],
             'nickname': self.nickname,  # Include the nickname in the game state
             'score': self.score,  # Include the score in the game state
             'speed': self.speed,  # Include the speed in the game state
+            'snake_direction': self.snake.direction,  # Include the direction of the snake
             'game_over': self.game_over,
             'endgame_text': self.endgame_text  # Include the endgame_text in the game state
         }
@@ -37,12 +39,15 @@ class GameLogic:
             for cell in row:
                 if cell == ' ':
                     state_row.append(' ')
-                elif cell == 'O':
-                    state_row.append('O')
-                elif cell == 'X':
-                    state_row.append('X')
                 elif cell == 'H':
                     state_row.append('H')
+                elif cell == 'B':
+                    state_row.append('B')
+                elif cell == 'F':
+                    state_row.append('F')
+                elif cell == 'O':
+                    state_row.append('O')
+
             state['board'].append(state_row)
         return state
 
@@ -121,7 +126,8 @@ class GameLogic:
         if new_head == self.food:
             self.food = self.generate_food()
             self.score += 1
-            self.speed /= 1.07  # Increase speed by 7%
+            self.speed *= 1.07  # Increase speed by 7%
+
         else:
             self.snake.body.pop()
 
@@ -132,6 +138,8 @@ class GameLogic:
             store_game_result(self.nickname, self.score, (self.width, self.height))
             store_game_result_to_mongodb(self.nickname, self.score, (self.width, self.height))
             print("Congratulations! You have won the game.")
+
+        self.update_board()
 
         self.update_board()
 
@@ -146,6 +154,5 @@ class GameLogic:
             self.board.place_obstacles(obstacle)
 
     def update_game(self):
-        while not self.game_over:
+        if not self.game_over:
             self.move_snake()
-            time.sleep(self.speed)

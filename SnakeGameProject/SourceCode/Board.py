@@ -7,14 +7,17 @@ class Board:
 
     def place_snake(self, snake):
         for y, x in snake.body:
-            self.grid[y][x] = 'O'
+            if (y, x) == snake.head[0]:
+                self.grid[y][x] = 'H'
+            else:
+                self.grid[y][x] = 'B'
 
     def place_food(self, food):
         y, x = food
-        self.grid[y][x] = 'X'
+        self.grid[y][x] = 'F'
 
     def place_obstacles(self, obstacles):
         for obstacle in obstacles:
             y, x = obstacle
-            self.grid[y][x] = 'H'
+            self.grid[y][x] = 'O'
             self.obstacles.append(obstacle)
