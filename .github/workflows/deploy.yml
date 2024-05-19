@@ -21,5 +21,6 @@ jobs:
         working-directory: ${{ github.workspace }}
 
       - name: Build Docker image
-        run: docker build -t SnakeGameProject:latest .
+        run: docker build -t snakegameproject:latest .
+
         working-directory: SnakeGameProject
