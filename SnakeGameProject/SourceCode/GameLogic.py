@@ -29,6 +29,7 @@ class GameLogic:
             'nickname': self.nickname,  # Include the nickname in the game state
             'score': self.score,  # Include the score in the game state
             'speed': self.speed,  # Include the speed in the game state
+            'snake_direction': self.snake.direction,  # Include the direction of the snake
             'game_over': self.game_over,
             'endgame_text': self.endgame_text  # Include the endgame_text in the game state
         }
@@ -37,12 +38,14 @@ class GameLogic:
             for cell in row:
                 if cell == ' ':
                     state_row.append(' ')
-                elif cell == 'O':
-                    state_row.append('O')
-                elif cell == 'X':
-                    state_row.append('X')
                 elif cell == 'H':
                     state_row.append('H')
+                elif cell == 'B':
+                    state_row.append('B')
+                elif cell == 'F':
+                    state_row.append('F')
+                elif cell == 'O':
+                    state_row.append('O')
             state['board'].append(state_row)
         return state
 
@@ -118,7 +121,8 @@ class GameLogic:
 
         if new_head == self.food:
             self.food = self.generate_food()
-            self.speed /= 1.07  # Increase speed by 7%
+            self.score += 1
+            self.speed *= 1.07  # Increase speed by 7%
         else:
             self.snake.body.pop()
 
@@ -141,6 +145,5 @@ class GameLogic:
             self.board.place_obstacles(obstacle)
 
     def update_game(self):
-        while not self.game_over:
+        if not self.game_over:
             self.move_snake()
-            time.sleep(self.speed)

@@ -1,5 +1,8 @@
 let  gameIntervalId = null;
 function startGame() {
+    // Hide the endgame screen if there is one
+    document.getElementById('endgameWindow').style.display = 'none';
+
     const size = document.getElementById('size').value;
     const nickname = document.getElementById('nickname').value;
     fetch('/start_game', {
@@ -46,7 +49,6 @@ function updateGameView() {
                 // Update the nickname and score
                 document.getElementById('nicknameDisplay').innerText = "Nickname: " + document.getElementById('nickname').value;
                 document.getElementById('scoreDisplay').innerText = "Score: " + gameState.score;
-                document.getElementById('speedDisplay').innerText = "Speed: " + gameState.speed.toFixed(2) + " squares per second";
 
                 // Draw the new game state
                 for (let row of gameState.board) {
@@ -56,11 +58,13 @@ function updateGameView() {
                         const cellDiv = document.createElement('div');
                         if (cell === ' ') {
                             cellDiv.className = 'empty';
-                        } else if (cell === 'O') {
-                            cellDiv.className = 'snake';
-                        } else if (cell === 'X') {
-                            cellDiv.className = 'food';
                         } else if (cell === 'H') {
+                            cellDiv.className = 'head ' + gameState.snake_direction.toLowerCase();
+                        } else if (cell === 'B') {
+                            cellDiv.className = 'snake';
+                        } else if (cell === 'F') {
+                            cellDiv.className = 'food';
+                        } else if (cell === 'O') {
                             cellDiv.className = 'obstacle';
                         }
                         rowDiv.appendChild(cellDiv);
