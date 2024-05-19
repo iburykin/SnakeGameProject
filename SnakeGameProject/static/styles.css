@@ -1,6 +1,17 @@
+
+/* Variables for colors */
+:root {
+    --primary-color: #38b000; /* Green color for buttons */
+    --primary-hover-color: #70e000; /* Lighter green color for button hover effect */
+    --primary-active-color: #008000; /* Darker green color for button active effect */
+    --background-color: #ccff33; /* Background color matching the logo */
+    --text-color: #003300; /* Dark green text color for contrast */
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
+    overflow: hidden; /* Hide scrollbars */
     margin: 0;
     padding: 0;
     background: #ccff33; /* Background color matching the logo */
@@ -93,24 +104,9 @@ form input[type="button"]:active {
     transition: all 0.3s ease;
 }
 
-/* Add this CSS to the end of your existing CSS file */
-
 #endgame-screen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     text-align: center;
-    background-image: url("{{ url_for('static', filename='endgame.png') }}"); /* Add your background image here */
-    background-size: cover;
-    background-position: center;
 }
-
-#endgame-text {
-    font-size: 3em; /* Increase font size for "Game Over" text */
-    color: white; /* Set text color to white for visibility */
-}
-
 
 #new-game-button {
     padding: 10px 20px;
@@ -140,6 +136,23 @@ form input[type="button"]:active {
     align-items: center;
     margin-top: 20px;
 }
+
+#game-info-and-board {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#game-info {
+    order: -1;
+    margin-right: 20px; /* Adjust this value to create more space between the game info and the game board */
+}
+
+#gameWindow {
+    background: rgba(0, 0, 0, 0.7);; /* Background color while game is being played */
+}
+
 
 .row {
     display: flex;

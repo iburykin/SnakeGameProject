@@ -88,5 +88,15 @@
         "name": "",
         "score": 0,
         "map_size": 10
+    },
+    {
+        "name": "",
+        "score": 1,
+        "map_size": 6
+    },
+    {
+        "name": "21",
+        "score": 3,
+        "map_size": 8
     }
 ]
