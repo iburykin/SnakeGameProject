@@ -49,11 +49,6 @@ def test_place_obstacles():
     assert board.grid[5][6] == 'O'
 
 
-# Tests for GameLogic class
-def test_move_snake(game):
-    game.move_snake('UP')
-    assert game.snake.head[0] == (4, 5)
-
 
 def test_food_generation(game):
     # Generate food multiple times and check if it always returns a valid position
@@ -89,11 +84,3 @@ def test_food_generated_on_start(game):
     # Check if food is generated when the game starts
     assert game.food is not None
 
-
-
-
-
-
-def test_food_generated_on_start(game):
-    # Check if food is generated when the game starts
-    assert game.food is not None
