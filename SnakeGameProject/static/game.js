@@ -18,6 +18,9 @@ function setCellSize(boardSize) {
 }
 
 function startGame() {
+        // Start the background music
+        const music = document.getElementById('background-music');
+        music.play();
 
     document.getElementById('endgameWindow').style.display = 'none';
 
@@ -73,6 +76,10 @@ function submitScore(name, score, map_size) {
 }
 
 function endGame(gameState) {
+        // Stop the background music
+    const music = document.getElementById('background-music');
+    music.pause();
+    music.currentTime = 0;  // Reset the music to the start
     const nickname = document.getElementById('nickname').value;
     const size = document.getElementById('size').value;
     submitScore(nickname, gameState.score, size);
@@ -147,7 +154,6 @@ document.addEventListener('keydown', function(event) {
         body: JSON.stringify({ direction: direction }),
     })
     .then(response => response.json())
-    .then(updateGameView)
     .catch(error => console.error('Error updating direction:', error));
 });
 
@@ -155,3 +161,8 @@ document.getElementById("home-button").onclick = function() {
     // Redirect to the home screen
     window.location.href = "/";
 };
+
+document.getElementById("volume-slider").addEventListener('input', function() {
+    const music = document.getElementById('background-music');
+    music.volume = this.value;
+});

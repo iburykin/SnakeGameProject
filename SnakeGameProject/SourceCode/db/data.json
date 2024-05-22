@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Test",
+        "score": 10,
+        "map_size": 5
+    },
+    {
+        "name": "Test",
+        "score": 0,
+        "map_size": 5
+    },
+    {
+        "name": "Test",
+        "score": 0,
+        "map_size": 5
+    },
+    {
+        "name": "2",
+        "score": 0,
+        "map_size": 23
+    },
+    {
+        "name": "2",
+        "score": 6,
+        "map_size": 5
+    },
+    {
+        "name": "1",
+        "score": 14,
+        "map_size": 5
+    },
+    {
+        "name": "2",
+        "score": 5,
+        "map_size": 5
+    }
+]
