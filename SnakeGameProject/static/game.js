@@ -1,20 +1,12 @@
 let gameIntervalId = null;
+
 function setCellSize(boardSize) {
-    // Get the available width and height of the viewport
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-
-    // Calculate the maximum possible cell size
     const maxCellWidth = Math.floor(viewportWidth / boardSize);
     const maxCellHeight = Math.floor(viewportHeight / boardSize);
-
-    // Use the smaller of the two values to ensure the board fits within the viewport
-    const cellSize = Math.min(maxCellWidth, maxCellHeight) - 2; // Adding some padding for borders
-
-    // Calculate the size of the triangle indicator for the snake head
+    const cellSize = Math.min(maxCellWidth, maxCellHeight) - 2;
     const triangleSize = Math.floor(cellSize / 2);
-
-    // Create a new CSS rule for the cell size and the snake head direction indicator
     const style = document.createElement('style');
     style.innerHTML = `
         .row > div {
@@ -58,8 +50,6 @@ function setCellSize(boardSize) {
 }
 
 function startGame() {
-    console.log('Starting game...');
-    // Hide the endgame screen if there is one
     document.getElementById('endgameWindow').style.display = 'none';
     let size = document.getElementById('size').value;
     if (size < 5 || size > 25) {
@@ -67,21 +57,14 @@ function startGame() {
         return;
     }
     const nickname = document.getElementById('nickname').value;
-    console.log('Game size:', size, 'Nickname:', nickname);
-
-    // Set the cell size based on the board size
     setCellSize(size);
-
     fetch('/start_game', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ size: size, nickname: nickname }),
     })
     .then(response => response.json())
     .then(() => {
-        console.log('Game started successfully.');
         updateGameView();
         document.getElementById('startingWindow').style.display = 'none';
         document.getElementById('gameWindow').style.display = 'block';
@@ -89,42 +72,50 @@ function startGame() {
     .catch(error => console.error('Error starting game:', error));
 }
 
+function submitScore(name, score, map_size) {
+    fetch('/submit_score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, score: score, map_size: map_size }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            console.log('Score submitted successfully.');
+        }
+    })
+    .catch(error => console.error('Error submitting score:', error));
+}
+
+function endGame(gameState) {
+    const nickname = document.getElementById('nickname').value;
+    const size = document.getElementById('size').value;
+    submitScore(nickname, gameState.score, size);
+    document.getElementById('gameWindow').style.display = 'none';
+    document.getElementById('endgameWindow').style.display = 'block';
+    document.getElementById('endgame-text').innerText = gameState.endgame_text;
+    document.getElementById('new-game-button').addEventListener('click', startGame);
+}
+
 function updateGameView() {
     fetch('/get_state')
         .then(response => response.json())
         .then(gameState => {
-            // Check if the game is over
             if (gameState.game_over) {
-                console.log('Game over!');
-                // Stop updating the game view
                 if (gameIntervalId !== null) {
                     clearInterval(gameIntervalId);
                     gameIntervalId = null;
                 }
-
-                // Hide the game board and show the endgame screen
-                document.getElementById('gameWindow').style.display = 'none';
-                document.getElementById('endgameWindow').style.display = 'block';
-
-                // Update the endgame text
-                document.getElementById('endgame-text').innerText = gameState.endgame_text;
-
-                // Add event listeners to the buttons
-                document.getElementById('new-game-button').addEventListener('click', startGame);
+                endGame(gameState);
             } else {
-                // Clear the game board
                 const gameBoard = document.getElementById('game-board');
                 gameBoard.innerHTML = '';
-
-                // Update the nickname and score
                 document.getElementById('nicknameDisplay').innerText = "Nickname: " + document.getElementById('nickname').value;
                 document.getElementById('scoreDisplay').innerText = "Score: " + gameState.score;
-
-                // Draw the new game state
-                for (let row of gameState.board) {
+                gameState.board.forEach(row => {
                     const rowDiv = document.createElement('div');
                     rowDiv.className = 'row';
-                    for (let cell of row) {
+                    row.forEach(cell => {
                         const cellDiv = document.createElement('div');
                         if (cell === ' ') {
                             cellDiv.className = 'empty';
@@ -138,11 +129,9 @@ function updateGameView() {
                             cellDiv.className = 'obstacle';
                         }
                         rowDiv.appendChild(cellDiv);
-                    }
+                    });
                     gameBoard.appendChild(rowDiv);
-                }
-
-                // Update the game interval to match the speed
+                });
                 if (gameIntervalId !== null) {
                     clearInterval(gameIntervalId);
                 }
@@ -150,8 +139,6 @@ function updateGameView() {
             }
         })
         .catch(error => {
-            console.log(error);
-            // Stop updating the game view if there's an error
             if (gameIntervalId !== null) {
                 clearInterval(gameIntervalId);
                 gameIntervalId = null;
@@ -159,31 +146,27 @@ function updateGameView() {
         });
 }
 
+
 document.addEventListener('keydown', function(event) {
     let direction;
     switch (event.code) {
-        case 'ArrowUp':
-            direction = 'UP';
-            break;
-        case 'ArrowDown':
-            direction = 'DOWN';
-            break;
-        case 'ArrowLeft':
-            direction = 'LEFT';
-            break;
-        case 'ArrowRight':
-            direction = 'RIGHT';
-            break;
-        default:
-            return;  // Quit when this doesn't handle the key event.
+        case 'ArrowUp': direction = 'UP'; break;
+        case 'ArrowDown': direction = 'DOWN'; break;
+        case 'ArrowLeft': direction = 'LEFT'; break;
+        case 'ArrowRight': direction = 'RIGHT'; break;
+        default: return;
     }
-    // Send the new direction to the server
     fetch('/update_direction', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ direction: direction }),
     })
-    .then(response => response.json());
+    .then(response => response.json())
+    .then(updateGameView)
+    .catch(error => console.error('Error updating direction:', error));
 });
+
+document.getElementById("home-button").onclick = function() {
+    // Redirect to the home screen
+    window.location.href = "/";
+};

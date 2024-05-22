@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
     <title>Snake Game</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-
 <body>
-
    <section id="startingWindow" class="sec">
-       <h1>Snake Game</h1>
+        <h1>Snake Game</h1>
         <div class="logo-container">
             <img src="{{ url_for('static', filename='snakelogo.png') }}" alt="Snake Logo">
         </div>
@@ -19,9 +15,12 @@
             <input type="text" id="nickname" name="nickname" required><br>
             <label class="form-label" for="size">Enter the size of the map (5-25):</label><br>
             <input type="number" id="size" name="size" min="5" max="25" required><br>
-            <input type="button" value="Start Game" onclick="startGame()">
         </form>
-   </section>
+        <div class="button-container">
+            <input type="button" class="start-button" value="Start Game" onclick="startGame()">
+            <button class="leaderboard-button" onclick="location.href='/leaderboard'">View Leaderboard</button>
+        </div>
+    </section>
 
     <section id="gameWindow" class="sec" style="display: none;">
         <div id="game-info-and-board">
@@ -32,16 +31,13 @@
             <div id="game-board"></div>
         </div>
     </section>
-
    <section id="endgameWindow" class="sec" style="display: none;">
-       <div id="endgame-screen">
+        <div id="endgame-screen">
             <h1 id="endgame-text"></h1>
             <button id="new-game-button">Start a new game</button>
-       </div>
-   </section>
-
+            <button id="home-button">Return to Home</button>
+        </div>
+    </section>
    <script src="{{ url_for('static', filename='game.js') }}"></script>
-
 </body>
-
 </html>

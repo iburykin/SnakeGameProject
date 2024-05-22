@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Leaderboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+   <section id="leaderboardWindow" class="sec leaderboard-bg">
+       <h1>Leaderboard</h1>
+       <table>
+           <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Score</th>
+                   <th>Map Size</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for entry in leaderboard %}
+               <tr>
+                   <td>{{ entry.name }}</td>
+                   <td>{{ entry.score }}</td>
+                   <td>{{ entry.map_size }}</td>
+               </tr>
+               {% endfor %}
+           </tbody>
+       </table>
+       <button onclick="location.href='/'">Back to Start</button>
+   </section>
+</body>
+</html>

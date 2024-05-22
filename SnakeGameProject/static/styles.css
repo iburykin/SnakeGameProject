@@ -254,3 +254,138 @@ form input[type="button"]:active {
     border-left: 40px solid green;
     transform: translateY(-50%);
 }
+
+
+
+/* Add the background image to the leaderboard container */
+#leaderboardWindow {
+    position: relative; /* Position relative to contain child elements */
+    padding: 20px; /* Add padding to separate the blurred background from the content */
+    border-radius: 8px; /* Add border radius for aesthetic */
+    overflow: hidden; /* Hide overflow to prevent blurred image from leaking out */
+}
+
+/* Apply blur effect and darken background image */
+#leaderboardWindow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('falling-snakes.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(5px) brightness(0.5); /* Apply blur and darken effect */
+    z-index: -1;
+}
+
+/* Style for the leaderboard content */
+#leaderboardWindow h1 {
+    color: white; /* Adjust text color for better contrast */
+}
+
+/* Style for the leaderboard table */
+#leaderboardWindow table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+#leaderboardWindow th, #leaderboardWindow td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7); /* Set a dark background color with transparency */
+    color: white; /* Adjust text color */
+}
+
+#leaderboardWindow th {
+    background-color: var(--primary-color); /* Set primary color for table headers */
+}
+
+#leaderboardWindow tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1); /* Set a lighter background color for even rows */
+}
+
+#leaderboardWindow tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.2); /* Set a slightly darker background color for odd rows */
+}
+
+#leaderboardWindow button {
+    margin-top: 20px; /* Adjust button margin for better spacing */
+    background-color: var(--primary-color); /* Set button background color */
+    color: white; /* Set button text color */
+    border: none; /* Remove button border */
+    padding: 10px 20px; /* Adjust button padding */
+    border-radius: 4px; /* Add border radius */
+    cursor: pointer; /* Set cursor to pointer on hover */
+    transition: background-color 0.3s, transform 0.3s; /* Add transition effects */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add box shadow for button */
+}
+
+#leaderboardWindow button:hover {
+    background-color: var(--primary-hover-color); /* Change button background color on hover */
+    transform: translateY(-2px); /* Move button slightly up on hover */
+}
+
+#leaderboardWindow button:active {
+    background-color: var(--primary-active-color); /* Change button background color on click */
+    transform: translateY(0); /* Reset button position on click */
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.start-button,
+.leaderboard-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0 10px; /* Adjust margin between buttons */
+}
+
+.start-button:hover,
+.leaderboard-button:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-2px);
+}
+
+.start-button:active,
+.leaderboard-button:active {
+    background-color: var(--primary-active-color);
+    transform: translateY(0);
+}
+#home-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 10px; /* Adjust margin-top as needed */
+}
+
+#home-button:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-2px);
+}
+
+#home-button:active {
+    background-color: var(--primary-active-color);
+    transform: translateY(0);
+}

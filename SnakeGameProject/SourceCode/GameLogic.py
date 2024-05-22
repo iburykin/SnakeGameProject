@@ -2,7 +2,7 @@ import time
 from SourceCode.Snake import Snake
 from SourceCode.Board import Board
 from SourceCode.mongodb import store_game_result
-from SourceCode.mongodb import store_game_result_to_mongodb
+
 import random
 class GameLogic:
     def __init__(self, width, height, nickname):
@@ -122,7 +122,7 @@ class GameLogic:
         if new_head in self.snake.body[1:] or new_head in self.board.obstacles:
             self.game_over = True
             store_game_result(self.nickname, self.score, self.width)
-            store_game_result_to_mongodb(self.nickname, self.score, self.width)
+
             return
 
         self.snake.body.insert(0, new_head)
@@ -134,7 +134,6 @@ class GameLogic:
         if not self.food:
             self.game_over = True  # No free space available for food
             store_game_result(self.nickname, self.score, self.width)
-            store_game_result_to_mongodb(self.nickname, self.score, self.width)
             return
 
         if new_head == self.food:

@@ -52,9 +52,8 @@ def store_game_result(name, score, map_size):
     write_data_to_file(data, DB_FILE)
     print(f"Stored game result in JSON: {name}, {score}, {map_size}")
 
-# Function to store game result in MongoDB
-def store_game_result_to_mongodb(name, score, map_size):
-    collection.insert_one({'name': name, 'score': score, 'map_size': map_size})
+
+
 
 # Function to initialize the database
 def initialize_database():
