@@ -18,29 +18,39 @@ function setCellSize(boardSize) {
 }
 
 function startGame() {
+
     document.getElementById('endgameWindow').style.display = 'none';
+
+    const nickname = document.getElementById('nickname').value;
+    // Validate the nickname
+    if (nickname === "" || nickname.length > 20) {
+        alert('Please enter a valid nickname. It should be less than 20 characters and not empty.');
+        return;
+        }
+
     let size = document.getElementById('size').value;
+    // Validate the size
     if (size < 5 || size > 25) {
         alert('Please enter a valid size between 5 and 25');
         return;
     }
-    const nickname = document.getElementById('nickname').value;
-    if (nickname === '') {
-        alert('Please enter a nickname');
-        return;
-    }
+
     setCellSize(size);
+
     fetch('/start_game', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ size: size, nickname: nickname }),
     })
+
     .then(response => response.json())
+
     .then(() => {
         updateGameView();
         document.getElementById('startingWindow').style.display = 'none';
         document.getElementById('gameWindow').style.display = 'block';
     })
+
     .catch(error => console.error('Error starting game:', error));
 }
 
@@ -50,12 +60,15 @@ function submitScore(name, score, map_size) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name, score: score, map_size: map_size }),
     })
+
     .then(response => response.json())
+
     .then(data => {
         if (data.status === 'success') {
             console.log('Score submitted successfully.');
         }
     })
+
     .catch(error => console.error('Error submitting score:', error));
 }
 
