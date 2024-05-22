@@ -1,9 +1,10 @@
-import time
 from SourceCode.Snake import Snake
 from SourceCode.Board import Board
 from SourceCode.mongodb import store_game_result
 
 import random
+
+
 class GameLogic:
     def __init__(self, width, height, nickname):
         self.width = width
