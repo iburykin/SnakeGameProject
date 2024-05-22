@@ -148,7 +148,6 @@ class GameLogic:
             self.win_bool = True
             self.game_over = True
             store_game_result(self.nickname, self.score, (self.width, self.height))
-            store_game_result_to_mongodb(self.nickname, self.score, (self.width, self.height))
             print("Congratulations! You have won the game.")
 
         self.update_board()
