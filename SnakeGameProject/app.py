@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-
+from pymongo import MongoClient
 from SourceCode.Snake import Snake
 from SourceCode.SnakeGame import SnakeGame
 from SourceCode.GameLogic import GameLogic
@@ -7,8 +7,12 @@ from SourceCode.GameLogic import GameLogic
 app = Flask(__name__)
 game = None
 
+# MongoDB connection
+client = MongoClient('mongodb://localhost:27017/')
+db = client['snake_game']
+collection = db['game_sessions']
 
-# TODO: Make the game over screen prettier
+
 @app.route('/start_game', methods=['POST'])
 def start_game():
     global game
@@ -35,6 +39,22 @@ def update_direction():
     if (game.game_logic.snake.direction, direction) not in opposite_directions:
         game.game_logic.snake.direction = direction  # Update the direction of the snake
     return jsonify(game.get_state()), 200
+
+# Function to store game result in MongoDB
+@app.route('/submit_score', methods=['POST'])
+def submit_score():
+    score_data = request.json
+    name = score_data['name']
+    score = score_data['score']
+    map_size = score_data['map_size']
+    collection.insert_one({'name': name, 'score': score, 'map_size': map_size})
+    return jsonify({"status": "success"}), 200
+
+@app.route('/leaderboard', methods=['GET'])
+def leaderboard():
+    top_scores = collection.find().sort('score', -1).limit(10)
+    leaderboard_data = [{'name': entry['name'], 'score': entry['score'], 'map_size': entry['map_size']} for entry in top_scores]
+    return render_template('leaderboard.html', leaderboard=leaderboard_data)
 
 
 @app.route('/')
