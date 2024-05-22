@@ -25,6 +25,10 @@ function startGame() {
         return;
     }
     const nickname = document.getElementById('nickname').value;
+    if (nickname === '') {
+        alert('Please enter a nickname');
+        return;
+    }
     setCellSize(size);
     fetch('/start_game', {
         method: 'POST',
