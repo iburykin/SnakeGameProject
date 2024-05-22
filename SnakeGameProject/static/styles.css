@@ -237,7 +237,7 @@ form input[type="button"]:active {
 }
 
 .row > .head {
-    background: url('snake.png') no-repeat center, var(--background-game-color);
+    background: url('snake_head.png') no-repeat center, var(--background-game-color);
     background-size: 125% auto;
 }
 
