@@ -21,38 +21,6 @@ function setCellSize(boardSize) {
             width: ${cellSize}px;
             height: ${cellSize}px;
         }
-        .row > .head.up::after {
-            left: 50%;
-            bottom: 0;
-            border-left: ${triangleSize}px solid transparent;
-            border-right: ${triangleSize}px solid transparent;
-            border-bottom: ${2 * triangleSize}px solid green;
-            transform: translateX(-50%);
-        }
-        .row > .head.down::after {
-            left: 50%;
-            top: 0;
-            border-left: ${triangleSize}px solid transparent;
-            border-right: ${triangleSize}px solid transparent;
-            border-top: ${2 * triangleSize}px solid green;
-            transform: translateX(-50%);
-        }
-        .row > .head.left::after {
-            right: 0;
-            top: 50%;
-            border-top: ${triangleSize}px solid transparent;
-            border-bottom: ${triangleSize}px solid transparent;
-            border-right: ${2 * triangleSize}px solid green;
-            transform: translateY(-50%);
-        }
-        .row > .head.right::after {
-            left: 0;
-            top: 50%;
-            border-top: ${triangleSize}px solid transparent;
-            border-bottom: ${triangleSize}px solid transparent;
-            border-left: ${2 * triangleSize}px solid green;
-            transform: translateY(-50%);
-        }
     `;
     document.head.appendChild(style);
 }

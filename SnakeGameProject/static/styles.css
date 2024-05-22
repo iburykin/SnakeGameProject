@@ -1,12 +1,12 @@
 /* Variables for colors */
 :root {
-    --primary-color: #84A98C; /* Green color for buttons */
-    --primary-hover-color: #CAD2C5; /* Lighter green color for button hover effect */
-    --primary-active-color: #84A98C; /* Darker green color for button active effect */
-    --background-color: #A7BEA9; /* Background color matching the logo */
-    --background-game-color: #CAD2C5; /* Background color for the game board */
-    --text-color: #5AAAAF; /* Dark green text color for contrast */
-    --food-color: #4E3C6A; /* Orange color for the food */
+    --primary-color: #84A98C;
+    --primary-hover-color: #CAD2C5;
+    --primary-active-color: #84A98C;
+    --background-color: #A7BEA9;
+    --background-game-color: #CAD2C5;
+    --text-color: #5AAAAF;
+    --food-color: #4E3C6A;
     --obstacle-color: #181F23;
 }
 
@@ -196,61 +196,37 @@ form input[type="button"]:active {
 }
 
 .row > .food {
-    background-color: var(--food-color);
+    background: url('food.png') no-repeat center, var(--background-game-color);
+    background-size: 150% auto;
 }
 
 .row > .obstacle {
-    background-color: var(--obstacle-color);
+    background: url('obstacle.png') no-repeat center, var(--background-game-color);
+    background-size: cover;
 }
 
 .row > .snake {
-    background-color: green;
+    background: url('body.png') no-repeat center;
+    background-size: cover;
 }
 
 .row > .head {
-    background-color: var(--background-game-color);
-    position: relative;
+    background: url('snake.png') no-repeat center, var(--background-game-color);
+    background-size: 125% auto;
 }
 
-.row > .head::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
+.row > .head.down {
+    transform: rotate(0);
 }
 
-.row > .head.up::after {
-    left: 50%;
-    bottom: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-bottom: 40px solid green;
-    transform: translateX(-50%);
+.row > .head.left {
+    transform: rotate(90deg);
 }
 
-.row > .head.down::after {
-    left: 50%;
-    top: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 40px solid green;
-    transform: translateX(-50%);
+.row > .head.up {
+    transform: rotate(180deg);
 }
 
-.row > .head.left::after {
-    right: 0;
-    top: 50%;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-right: 40px solid green;
-    transform: translateY(-50%);
-}
-
-.row > .head.right::after {
-    left: 0;
-    top: 50%;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-left: 40px solid green;
-    transform: translateY(-50%);
+.row > .head.right {
+    transform: rotate(270deg);
 }
