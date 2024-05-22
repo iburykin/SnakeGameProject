@@ -23,7 +23,6 @@ class GameLogic:
         self.endgame_text = "Congratulations! You have won the game." if self.win_bool else "Game Over!"
         self.game_over = False
 
-    # TODO: Change it so the player name will be passed in another method
     def get_state(self):
         state = {
             'board': [],
