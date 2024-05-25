@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -9,39 +8,57 @@
 
 <body>
 
-   <section id="startingWindow" class="sec">
-       <h1>Snake Game</h1>
+    <audio id="background-music" loop>
+    <source src="{{ url_for('static', filename='sigma_music.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>
+
+    <section id="startingWindow" class="sec">
+        <h1>Snake Game</h1>
+
         <div class="logo-container">
             <img src="{{ url_for('static', filename='snakelogo.png') }}" alt="Snake Logo">
         </div>
+
         <form id="startForm">
             <label class="form-label" for="nickname">Enter your nickname:</label><br>
             <input type="text" id="nickname" name="nickname" required><br>
             <label class="form-label" for="size">Enter the size of the map (5-25):</label><br>
             <input type="number" id="size" name="size" min="5" max="25" required><br>
-            <input type="button" value="Start Game" onclick="startGame()">
         </form>
-   </section>
+
+        <div class="button-container">
+            <input type="button" class="start-button" value="Start Game" onclick="startGame()">
+            <button class="leaderboard-button" onclick="location.href='/leaderboard'">View Leaderboard</button>
+        </div>
+
+    </section>
 
     <section id="gameWindow" class="sec" style="display: none;">
+
         <div id="game-info-and-board">
+
             <div id="game-info">
                 <h2 id="nicknameDisplay"></h2>
                 <h2 id="scoreDisplay"></h2>
+                <h3 id="change-music-text">Change the music volume:</h3>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
             </div>
+
             <div id="game-board"></div>
         </div>
+
     </section>
 
    <section id="endgameWindow" class="sec" style="display: none;">
-       <div id="endgame-screen">
+        <div id="endgame-screen">
             <h1 id="endgame-text"></h1>
             <button id="new-game-button">Start a new game</button>
-       </div>
-   </section>
+            <button id="home-button">Return to Home</button>
+        </div>
+    </section>
 
    <script src="{{ url_for('static', filename='game.js') }}"></script>
 
 </body>
-
 </html>

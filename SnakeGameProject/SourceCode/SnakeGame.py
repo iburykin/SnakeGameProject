@@ -1,5 +1,6 @@
 from SourceCode.GameLogic import GameLogic
 
+
 class SnakeGame:
     def __init__(self, size, nickname):
         self.size = size

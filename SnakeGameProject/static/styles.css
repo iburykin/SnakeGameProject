@@ -1,18 +1,16 @@
 /* Variables for colors */
 :root {
-    --primary-color: #84A98C; /* Green color for buttons */
-    --primary-hover-color: #CAD2C5; /* Lighter green color for button hover effect */
-    --primary-active-color: #84A98C; /* Darker green color for button active effect */
-    --background-color: #A7BEA9; /* Background color matching the logo */
-    --background-game-color: #CAD2C5; /* Background color for the game board */
-    --text-color: #5AAAAF; /* Dark green text color for contrast */
-    --food-color: #4E3C6A; /* Orange color for the food */
+    --primary-color: #84A98C;
+    --primary-hover-color: #CAD2C5;
+    --primary-active-color: #84A98C;
+    --background-color: #A7BEA9;
+    --background-game-color: #CAD2C5;
+    --text-color: #5AAAAF;
+    --food-color: #4E3C6A;
     --obstacle-color: #181F23;
 }
 
-/* Body styles
- TODO: Add leaderboard, game textures
- TODO: Add some responsible textfield in the startWindow*/
+/* Body styles */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -30,6 +28,13 @@ h1, h2 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+h3 {
+    margin: 20px;
+    color: var(--text-color);
+    font-size: 2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 .sec {
     display: flex;
     flex-direction: column;
@@ -40,7 +45,13 @@ h1, h2 {
 }
 
 .logo-container {
-    margin-bottom: 20px; /* Adjust this value to move the image higher */
+    margin-bottom: 10px; /* Adjust this value to move the image higher */
+}
+/* Adjust the size of the snake game logo */
+.logo-container img {
+    max-width: 100%; /* Ensures the logo is responsive */
+    width: 400px; /* Adjust this value to change the logo size */
+    height: auto; /* Maintain aspect ratio */
 }
 
 .form-label {
@@ -50,15 +61,26 @@ h1, h2 {
 
 
 #startingWindow {
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 8px;
-    transition: all 0.3s ease; /* Smooth transition for better effect */
+    position: relative; /* Position relative to contain child elements */
+    padding: 20px; /* Add padding to separate the blurred background from the content */
+    border-radius: 8px; /* Add border radius for aesthetic */
+    overflow: hidden; /* Hide overflow to prevent blurred image from leaking out */
+}
+
+/* Apply blur effect and darken background image */
+#startingWindow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-image: url('falling-snakes.gif');
-    background-size: cover; /* Ensures the background image covers the entire element */
-    background-position: center; /* Centers the background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(5px) brightness(0.5); /* Apply blur and darken effect */
+    z-index: -1;
 }
 
 form {
@@ -162,6 +184,10 @@ form input[type="button"]:active {
     margin-right: 20px; /* Adjust this value to create more space between the game info and the game board */
 }
 
+#game-info > #nicknameDisplay, #scoreDisplay {
+    margin-bottom: 50px;
+}
+
 #gameWindow {
     position: relative;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
@@ -196,61 +222,189 @@ form input[type="button"]:active {
 }
 
 .row > .food {
-    background-color: var(--food-color);
+    background: url('food.png') no-repeat center, var(--background-game-color);
+    background-size: 150% auto;
 }
 
 .row > .obstacle {
-    background-color: var(--obstacle-color);
+    background: url('obstacle.png') no-repeat center, var(--background-game-color);
+    background-size: cover;
 }
 
 .row > .snake {
-    background-color: green;
+    background: url('body.png') no-repeat center;
+    background-size: cover;
 }
 
 .row > .head {
-    background-color: var(--background-game-color);
-    position: relative;
+    background: url('snake_head.png') no-repeat center, var(--background-game-color);
+    background-size: 125% auto;
 }
 
-.row > .head::after {
+.row > .head.down {
+    transform: rotate(0);
+}
+
+.row > .head.left {
+    transform: rotate(90deg);
+}
+
+.row > .head.up {
+    transform: rotate(180deg);
+}
+
+.row > .head.right {
+    transform: rotate(270deg);
+}
+
+
+
+/* Add the background image to the leaderboard container */
+#leaderboardWindow {
+    position: relative; /* Position relative to contain child elements */
+    padding: 20px; /* Add padding to separate the blurred background from the content */
+    border-radius: 8px; /* Add border radius for aesthetic */
+    overflow: hidden; /* Hide overflow to prevent blurred image from leaking out */
+}
+
+/* Apply blur effect and darken background image */
+#leaderboardWindow::before {
     content: "";
     position: absolute;
-    width: 0;
-    height: 0;
-}
-
-.row > .head.up::after {
-    left: 50%;
-    bottom: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-bottom: 40px solid green;
-    transform: translateX(-50%);
-}
-
-.row > .head.down::after {
-    left: 50%;
     top: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 40px solid green;
-    transform: translateX(-50%);
-}
-
-.row > .head.left::after {
-    right: 0;
-    top: 50%;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-right: 40px solid green;
-    transform: translateY(-50%);
-}
-
-.row > .head.right::after {
     left: 0;
-    top: 50%;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-left: 40px solid green;
-    transform: translateY(-50%);
+    width: 100%;
+    height: 100%;
+    background-image: url('falling-snakes.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(5px) brightness(0.5); /* Apply blur and darken effect */
+    z-index: -1;
+}
+
+/* Style for the leaderboard content */
+#leaderboardWindow h1 {
+    color: white; /* Adjust text color for better contrast */
+}
+
+/* Style for the leaderboard table */
+#leaderboardWindow table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+#leaderboardWindow th, #leaderboardWindow td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7); /* Set a dark background color with transparency */
+    color: white; /* Adjust text color */
+}
+
+#leaderboardWindow th {
+    background-color: var(--primary-color); /* Set primary color for table headers */
+}
+
+#leaderboardWindow tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1); /* Set a lighter background color for even rows */
+}
+
+#leaderboardWindow tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.2); /* Set a slightly darker background color for odd rows */
+}
+
+#leaderboardWindow button {
+    margin-top: 20px; /* Adjust button margin for better spacing */
+    background-color: var(--primary-color); /* Set button background color */
+    color: white; /* Set button text color */
+    border: none; /* Remove button border */
+    padding: 10px 20px; /* Adjust button padding */
+    border-radius: 4px; /* Add border radius */
+    cursor: pointer; /* Set cursor to pointer on hover */
+    transition: background-color 0.3s, transform 0.3s; /* Add transition effects */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add box shadow for button */
+}
+
+#leaderboardWindow button:hover {
+    background-color: var(--primary-hover-color); /* Change button background color on hover */
+    transform: translateY(-2px); /* Move button slightly up on hover */
+}
+
+#leaderboardWindow button:active {
+    background-color: var(--primary-active-color); /* Change button background color on click */
+    transform: translateY(0); /* Reset button position on click */
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.start-button,
+.leaderboard-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0 10px; /* Adjust margin between buttons */
+}
+
+.start-button:hover,
+.leaderboard-button:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-2px);
+}
+
+.start-button:active,
+.leaderboard-button:active {
+    background-color: var(--primary-active-color);
+    transform: translateY(0);
+}
+#home-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 10px; /* Adjust margin-top as needed */
+}
+
+#home-button:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-2px);
+}
+
+#home-button:active {
+    background-color: var(--primary-active-color);
+    transform: translateY(0);
+}
+
+/* Change the color of the volume slider */
+#volume-slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    scroll-behavior: smooth;
+    width: 100%; /* Full-width */
+    height: 10px; /* Specified height */
+    background: var(--text-color); /* Background color */
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px; /* Set a specific slider handle height */
+    width: 20px; /* Slider handle width */
+    background: var(--obstacle-color); /* Change the color to match the text color */
+    cursor: pointer; /* Cursor on hover */
 }
